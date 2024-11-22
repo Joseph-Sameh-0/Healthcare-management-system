@@ -1,0 +1,11 @@
+Test Case 1: Add Doctor
+Input: Add Doctor D001 Dr. Smith 123 Main St
+Expected Output: Doctor D001 added successfully.
+Actual Output: Doctor D001 added successfully.
+Result: PASS
+
+Test Case 2: Query by Doctor ID
+Input: Select all from Doctors where Doctor ID='D001';
+Expected Output: Doctor Info: ID: D001 Name: Dr. Smith Address: 123 Main St
+Actual Output: Doctor Info: ID: D001 Name: Dr. Smith Address: 123 Main St
+Result: PASS

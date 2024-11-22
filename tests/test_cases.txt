@@ -1,0 +1,14 @@
+Add Doctor
+D001
+Dr. Smith
+123 Main St
+
+Add Appointment
+A001
+2024-11-25
+D001
+
+Select all from Doctors where Doctor ID='D001';
+
+Delete Doctor
+D001
