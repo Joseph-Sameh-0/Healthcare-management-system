@@ -1,5 +1,5 @@
 #include <iostream>
-#include "HealthcareSystem.cpp"
+#include "HealthcareSystem.h"
 using namespace std;
 
 int main() {

@@ -11,7 +11,7 @@ public:
     // Other methods: deleteDoctor, deleteAppointment, etc.
 
 private:
-    void updatePrimaryIndex(const string &file, const string &key, const string &record);
+    void updatePrimaryIndex(const string &file, const string &key, const long long byteOffset);
     void updateSecondaryIndex(const string &file, const string &secondaryKey, const string &primaryKey);
 };
 
