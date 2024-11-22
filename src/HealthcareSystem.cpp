@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
-#include <filesystem>
 
 using namespace std;
 
@@ -25,9 +24,9 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
     doctorsFile.close();
 
     // Update indexes
-    updatePrimaryIndex("data/PrimaryIndexDoctors.txt", doctorID, record.length()); // TODO: update with byte offset after calculate it
+    updatePrimaryIndex("../data/PrimaryIndexDoctors.txt", doctorID, record.length()); // TODO: update with byte offset after calculate it
 
-    updateSecondaryIndex("data/SecondaryIndexDoctors.txt", name, doctorID);
+    updateSecondaryIndex("../data/SecondaryIndexDoctors.txt", name, doctorID);
 }
 
 void HealthcareSystem::updatePrimaryIndex(const string &file, const string &key, const long long byteOffset) {
