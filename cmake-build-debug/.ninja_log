@@ -1,0 +1,13 @@
+# ninja log v5
+7	588	7539822493851960	CMakeFiles/Healthcare_management_system.dir/src/main.cpp.obj	1aea57527881e605
+13	810	7539822496072444	CMakeFiles/Healthcare_management_system.dir/src/utils.cpp.obj	cac041ba138fe3d
+4	402	7539823740192793	CMakeFiles/Healthcare_management_system.dir/src/HealthcareSystem.cpp.obj	234cc1eb8cb1ba84
+403	626	7539823742356068	Healthcare_management_system.exe	2aa6b7c832b832cc
+4	388	7539824427248244	CMakeFiles/Healthcare_management_system.dir/src/HealthcareSystem.cpp.obj	234cc1eb8cb1ba84
+388	550	7539824428792301	Healthcare_management_system.exe	2aa6b7c832b832cc
+4	372	7539826409755745	CMakeFiles/Healthcare_management_system.dir/src/HealthcareSystem.cpp.obj	234cc1eb8cb1ba84
+372	511	7539826411091195	Healthcare_management_system.exe	2aa6b7c832b832cc
+4	485	7539827463721648	CMakeFiles/Healthcare_management_system.dir/src/HealthcareSystem.cpp.obj	234cc1eb8cb1ba84
+486	646	7539827465250711	Healthcare_management_system.exe	2aa6b7c832b832cc
+5	731	7539827690732734	CMakeFiles/Healthcare_management_system.dir/src/HealthcareSystem.cpp.obj	234cc1eb8cb1ba84
+732	932	7539827692662153	Healthcare_management_system.exe	2aa6b7c832b832cc
