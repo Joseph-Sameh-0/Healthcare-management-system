@@ -1,3 +1,0 @@
-D:/VS Code/CPP/3rd year/1st term/file managment/Project/Healthcare-management-system/cmake-build-debug/CMakeFiles/Healthcare_management_system.dir
-D:/VS Code/CPP/3rd year/1st term/file managment/Project/Healthcare-management-system/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/VS Code/CPP/3rd year/1st term/file managment/Project/Healthcare-management-system/cmake-build-debug/CMakeFiles/rebuild_cache.dir

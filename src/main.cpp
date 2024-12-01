@@ -1,44 +1,62 @@
 #include <iostream>
-#include "HealthcareSystem.h"
+#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-    HealthcareSystem system;
-
     int choice;
+
     do {
-        cout << "\n--- Healthcare Management System ---\n";
-        cout << "1. Add Doctor\n2. Add Appointment\n3. Delete Doctor\n4. Delete Appointment\n";
-        cout << "5. Update Doctor Name\n6. Update Appointment Date\n7. Print Doctor Info\n";
-        cout << "8. Print Appointment Info\n9. Execute Query\n0. Exit\n";
-        cout << "Enter your choice: ";
+        cout << "Welcome to Hospital Management System" << endl;
+        cout << "1. Add New Doctor" << endl;
+        cout << "2. Add New Appointment" << endl;
+        cout << "3. Update Doctor Name (Doctor ID)" << endl;
+        cout << "4. Update Appointment Date (Appointment ID)" << endl;
+        cout << "5. Delete Appointment (Appointment ID)" << endl;
+        cout << "6. Delete Doctor (Doctor ID)" << endl;
+        cout << "7. Print Doctor Info (Doctor ID)" << endl;
+        cout << "8. Print Appointment Info (Appointment ID)" << endl;
+        cout << "9. Write Query" << endl;
+        cout << "10. Exit" << endl;
+
+        cout << "Enter the number of your choice your choice: ";
         cin >> choice;
 
         switch (choice) {
-            case 1: {
-                string id, name, address;
-                cout << "Enter Doctor ID: "; cin >> id;
-                cout << "Enter Doctor Name: "; cin.ignore(); getline(cin, name);
-                cout << "Enter Address: "; getline(cin, address);
-                system.addDoctor(id, name, address);
+            case 1:
+                // Add new doctor
                 break;
-            }
-            case 2: {
-                string id, date, doctorId;
-                cout << "Enter Appointment ID: "; cin >> id;
-                cout << "Enter Appointment Date: "; cin.ignore(); getline(cin, date);
-                cout << "Enter Doctor ID: "; cin >> doctorId;
-                system.addAppointment(id, date, doctorId);
+            case 2:
+                // Add new appointment
                 break;
-            }
-            case 0:
-                cout << "Exiting the system. Goodbye!\n";
+            case 3:
+                // Update doctor name
+                break;
+            case 4:
+                // Update appointment date
+                break;
+            case 5:
+                // Delete appointment
+                break;
+            case 6:
+                // Delete Doctor
+                break;
+            case 7:
+                // Print doctor info
+                break;
+            case 8:
+                // Print appointment info
+                break;
+            case 9:
+                // Write query
+                break;
+            case 10:
+                cout << "Exiting the program..." << endl;
                 break;
             default:
-                cout << "Invalid choice. Please try again.\n";
+                cout << "Invalid choice. Please try again." << endl;
         }
 
-    } while (choice != 0);
+    } while (choice != 10);
 
     return 0;
 }
