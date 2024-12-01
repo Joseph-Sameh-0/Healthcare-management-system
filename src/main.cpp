@@ -2,8 +2,58 @@
 #include "HealthcareSystem.h"
 using namespace std;
 
-int main() {
+int main()
+{
     HealthcareSystem system;
+
+    // system.dIndex.update_index("D001", 0);
+    // for (PrimaryIndexRow r : system.dIndex.getVector())
+    //     cout << r.Id << " " << r.byteOffset << endl;
+    // cout << endl;
+    // system.dIndex.update_index("D003", 20);
+    // for (PrimaryIndexRow r : system.dIndex.getVector())
+    //     cout << r.Id << " " << r.byteOffset << endl;
+    // cout << endl;
+    // system.dIndex.update_index("D002", 50);
+    // for (PrimaryIndexRow r : system.dIndex.getVector())
+    //     cout << r.Id << " " << r.byteOffset << endl;
+    // cout << endl;
+
+    // system.dIndex.deleteID("D002");
+    // for (PrimaryIndexRow r : system.dIndex.getVector())
+    //     cout << r.Id << " " << r.byteOffset << endl;
+    // cout << endl;
+
+    // system.dIndex.deleteID("D001");
+    // for (PrimaryIndexRow r : system.dIndex.getVector())
+    //     cout << r.Id << " " << r.byteOffset << endl;
+    // cout << endl;
+
+    // system.dIndex.deleteID("D003");
+    // for (PrimaryIndexRow r : system.dIndex.getVector())
+    //     cout << r.Id << " " << r.byteOffset << endl;
+    // cout << endl;
+
+    // system.dSIndex.update_index("Dr. Smith", "D001");
+    // for (SecondaryIndexRow<char[30]> r : system.dSIndex.getVector())
+    //     cout << r.Key << " " << r.Id << endl;
+    // cout << endl;
+
+    // system.dSIndex.update_index("Dr. Jones", "D002");
+    // for (SecondaryIndexRow<char[30]> r : system.dSIndex.getVector())
+    //     cout << r.Key << " " << r.Id << endl;
+    // cout << endl;
+
+    // system.dSIndex.deleteKey("Dr. Smith");
+    // for (SecondaryIndexRow<char[30]> r : system.dSIndex.getVector())
+    //     cout << r.Key << " " << r.Id << endl;
+    // cout << endl;
+
+    // system.dSIndex.deleteKey("Dr. Jones");
+    // for (SecondaryIndexRow<char[30]> r : system.dSIndex.getVector())
+    //     cout << r.Key << " " << r.Id << endl;
+    // cout << endl;
+
 
     int choice;
     do {
