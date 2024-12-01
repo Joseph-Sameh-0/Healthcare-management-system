@@ -1,5 +1,5 @@
 #include <iostream>
-#include "HealthcareSystem.h"
+#include "HealthcareSystem.cpp"
 using namespace std;
 
 int main() {
@@ -20,7 +20,7 @@ int main() {
                 cout << "Enter Doctor ID: "; cin >> id;
                 cout << "Enter Doctor Name: "; cin.ignore(); getline(cin, name);
                 cout << "Enter Address: "; getline(cin, address);
-                system.addDoctor(id, name, address);
+                // system.addDoctor(id, name, address);
                 break;
             }
             case 2: {
@@ -28,7 +28,13 @@ int main() {
                 cout << "Enter Appointment ID: "; cin >> id;
                 cout << "Enter Appointment Date: "; cin.ignore(); getline(cin, date);
                 cout << "Enter Doctor ID: "; cin >> doctorId;
-                system.addAppointment(id, date, doctorId);
+                // system.addAppointment(id, date, doctorId);
+                break;
+            }
+            case 3: {
+                string id;
+                cout << "Enter Doctor ID: "; cin >> id;
+                cout << system.searchDoctor(id);
                 break;
             }
             case 0:

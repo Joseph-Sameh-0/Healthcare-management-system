@@ -1,5 +1,9 @@
 #include "utils.h"
 #include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
 
 using namespace std;
 
@@ -18,16 +22,26 @@ vector<string> split(const string &str, char delimiter) {
     while (getline(ss, token, delimiter)) {
         tokens.push_back(token);
     }
-    return tokens;
 }
+int binarySearch(fstream &indexfile, const string &key, int recordSize, int keySize) {
 
-// Perform a binary search in a sorted vector
-int binarySearch(const vector<string> &data, const string &key) {
-    int low = 0, high = data.size() - 1;
+    indexfile.seekg(0, ios::end);
+    int fileSize = indexfile.tellg();
+    indexfile.seekg(0, ios::beg);
+
+    int low = 0, high = fileSize / recordSize - 1; // assuming each key is 4 bytes
     while (low <= high) {
         int mid = low + (high - low) / 2;
-        if (data[mid] == key) return mid;
-        if (data[mid] < key)
+        indexfile.seekg(mid * recordSize, ios::beg);
+        cout << indexfile.tellg() << endl;
+        char possiblekey[keySize + 1] = {0}; // +1 for null terminator
+        indexfile.read(possiblekey, keySize);
+        possiblekey[keySize] = '\0'; // Ensure null termination
+
+        cout << possiblekey << " " << low << " " << high << endl;
+        string possibleKeyStr(possiblekey);
+        if (possibleKeyStr.compare(key) == 0) return mid;
+        if (possibleKeyStr.compare(key) < 0)
             low = mid + 1;
         else
             high = mid - 1;

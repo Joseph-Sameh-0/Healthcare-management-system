@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
-
+#include "utils.cpp"
 using namespace std;
 
 void HealthcareSystem::addDoctor(const string &doctorID, const string &name, const string &address) {
@@ -48,4 +48,15 @@ void HealthcareSystem::addAppointment(const string &appointmentID, const string 
     (void)date;
     (void)doctorID;
     // Implementation goes here
+}
+string HealthcareSystem::searchDoctor(const string doctorID) {
+    
+    fstream doctorsPrimaryIndex;
+    doctorsPrimaryIndex.open("../data/PrimaryIndexDoctors.txt", ios::in);
+    int key = binarySearch(doctorsPrimaryIndex, doctorID, 9, 4);
+    if (key == -1) {
+        return "Doctor not found";
+    }
+    return "Doctor found";
+
 }

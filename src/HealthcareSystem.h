@@ -8,6 +8,8 @@ class HealthcareSystem {
 public:
     void addDoctor(const string &doctorID, const string &name, const string &address);
     void addAppointment(const string &appointmentID, const string &date, const string &doctorID);
+    string searchDoctor(const string doctorID);
+
     // Other methods: deleteDoctor, deleteAppointment, etc.
 
 private:
