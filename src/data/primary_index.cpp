@@ -100,7 +100,7 @@ public:
     PrimaryIndexRow s;
     while (left <= right)
     {
-      mid = left + right / 2;
+      mid = left + (right - left) / 2;
       mid -= mid % sizeof(PrimaryIndexRow);
       // cout << "left " << left << " mid " << mid << " right " << right << endl;
       file.seekg(mid, ios::beg);
