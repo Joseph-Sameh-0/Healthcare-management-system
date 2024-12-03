@@ -1,10 +1,13 @@
 #ifndef PRIMARYINDEX
 #define PRIMARYINDEX
 
-#include "bits/stdc++.h"
+#include <cstring>
+#include <fstream>
+#include <string>
+#include <vector>
 using namespace std;
 
-struct PrimaryIndexRow
+struct PrimaryIndexRow 
 {
   char Id[15];
   long long byteOffset;

@@ -18,8 +18,12 @@ public:
     SecondaryIndex<char[30]> dSIndex;
     SecondaryIndex<char[15]> aSIndex;
     void addDoctor(const string &doctorID, const string &name, const string &address);
+    void updateDoctor(const string &id, const string &newName, const string &newAddress);
+    void deleteDoctor(const string &doctorID);
+
+    void updateAppointment(const string &appointmentID, const string &newDate, const string &newDoctorID);
+    void deleteAppointment(const string &appointmentID);
     void addAppointment(const string &appointmentID, const string &date, const string &doctorID);
-    // Other methods: deleteDoctor, deleteAppointment, etc.
     HealthcareSystem()
     {
         dIndex = PrimaryIndex("D:/VS Code/CPP/3rd year/1st term/file managment/Project/Healthcare-management-system/data/PrimaryIndexDoctors.txt");
