@@ -26,7 +26,8 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
     // Update indexes
     updatePrimaryIndex("../data/PrimaryIndexDoctors.txt", doctorID, record.length()); // TODO: update with byte offset after calculate it
 
-    updateSecondaryIndex("../data/SecondaryIndexDoctors.txt", name, doctorID);
+    updateSecondaryIndex("../data/SecondaryIndexDoctors.txt", "../data/LinkedListDoctors.txt", name, doctorID);
+    
 }
 
 void HealthcareSystem::updatePrimaryIndex(const string &file, const string &key, const long long byteOffset) {
@@ -36,8 +37,9 @@ void HealthcareSystem::updatePrimaryIndex(const string &file, const string &key,
     // Implementation goes here
 }
 
-void HealthcareSystem::updateSecondaryIndex(const string &file, const string &secondaryKey, const string &primaryKey) {
-    (void)file;
+void HealthcareSystem::updateSecondaryIndex(const string &SecondaryIndexFile, const string &LinkedListFile, const string &secondaryKey, const string &primaryKey) {
+    (void)SecondaryIndexFile;
+    (void)LinkedListFile;
     (void)secondaryKey;
     (void)primaryKey;
     // Implementation goes here
@@ -48,15 +50,4 @@ void HealthcareSystem::addAppointment(const string &appointmentID, const string 
     (void)date;
     (void)doctorID;
     // Implementation goes here
-}
-string HealthcareSystem::searchDoctor(const string doctorID) {
-    
-    fstream doctorsPrimaryIndex;
-    doctorsPrimaryIndex.open("../data/PrimaryIndexDoctors.txt", ios::in);
-    int key = binarySearch(doctorsPrimaryIndex, doctorID, 9, 4);
-    if (key == -1) {
-        return "Doctor not found";
-    }
-    return "Doctor found";
-
 }

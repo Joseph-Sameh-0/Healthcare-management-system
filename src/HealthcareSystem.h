@@ -10,7 +10,7 @@ class HealthcareSystem
 {
 private:
     void updatePrimaryIndex(const string &file, const string &key, const long long byteOffset);
-    void updateSecondaryIndex(const string &file, const string &secondaryKey, const string &primaryKey);
+    void updateSecondaryIndex(const string &SecondaryIndexFile, const string &LinkedListFile, const string &secondaryKey, const string &primaryKey);
 
 public:
     PrimaryIndex dIndex;
@@ -24,8 +24,8 @@ public:
     {
         dIndex = PrimaryIndex("D:/VS Code/CPP/3rd year/1st term/file managment/Project/Healthcare-management-system/data/PrimaryIndexDoctors.txt");
         aIndex = PrimaryIndex("D:/VS Code/CPP/3rd year/1st term/file managment/Project/Healthcare-management-system/data/PrimaryIndexAppointments.txt");
-        dSIndex = SecondaryIndex<char[30]>("D:/VS Code/CPP/3rd year/1st term/file managment/Project/Healthcare-management-system/data/SecondaryIndexDoctors.txt");
-        aSIndex = SecondaryIndex<char[15]>("D:/VS Code/CPP/3rd year/1st term/file managment/Project/Healthcare-management-system/data/SecondaryIndexAppointments.txt");
+        dSIndex = SecondaryIndex<char[30]>("../data/SecondaryIndexDoctors.txt", "../data/LinkedListDoctors.txt");
+        aSIndex = SecondaryIndex<char[15]>("D:/VS Code/CPP/3rd year/1st term/file managment/Project/Healthcare-management-system/data/SecondaryIndexAppointments.txt", "../data/LinkedListAppointments.txt");
     }
 };
 
