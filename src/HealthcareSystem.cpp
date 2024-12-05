@@ -12,8 +12,9 @@ using namespace std;
 void HealthcareSystem::addDoctor(const string &doctorID, const string &name, const string &address)
 {
 
-    if (dIndex.getByteOffset(doctorID.c_str()) == -1){
-        cout << "This Doctor is already exist" << endl; 
+    if (dIndex.getByteOffset(doctorID.c_str()) != -1)
+    {
+        cout << "This Doctor is already exist" << endl;
         return;
     }
     // File for storing doctor records
@@ -57,7 +58,7 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
             {
                 // Update avail list header
                 doctorFile.seekp(0, ios::beg);
-                doctorFile.write((char *)&nextDeletedRecord, sizeof(int));
+                doctorFile.write((char *)&nextDeletedRecord, sizeof(int));//////////
 
                 doctorFile.seekp(byteOffset, ios::beg);
                 doctorFile.put(EMPTY_FLAG);
@@ -66,6 +67,7 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
                 doctorFile.write((char *)&currRecordSize, sizeof(int));
                 doctorFile.write(record.c_str(), recordSize);
                 doctorFile.close();
+                dIndex.update_index(doctorID.c_str(), byteOffset);
 
                 return;
             }
@@ -75,6 +77,7 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
 
     // If no deleted records were suitable, append the new record to the end of the file
     doctorFile.seekp(0, ios::end);
+    byteOffset = doctorFile.tellp(); // Get the byte offset for the new record
     doctorFile.put(EMPTY_FLAG);
     int jj = -1;
     doctorFile.write((char *)&jj, sizeof(int));
@@ -86,6 +89,7 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
     const char *DocId = doctorID.c_str();
     dIndex.update_index(DocId, byteOffset);
     //     dSIndex.add(name.c_str(), doctorID.c_str());
+    cout << "Doctor added successfully" << endl;
 }
 
 void HealthcareSystem::printDoctor(int byteOffset)
@@ -150,9 +154,9 @@ void HealthcareSystem::deleteDoctor(const string &doctorID)
 
     // Seek to the byte offset of the record to be deleted
     doctorFile.seekg(byteOffset, ios::beg);
-    doctorFile.get(flag);                              // Read the flag
+    doctorFile.get(flag);                                     // Read the flag
     doctorFile.read((char *)&nextDeletedRecord, sizeof(int)); // Read the pointer to the next deleted record
-    doctorFile.read((char *)&recordSize, sizeof(int));  // Read the size of the record
+    doctorFile.read((char *)&recordSize, sizeof(int));        // Read the size of the record
 
     if (flag == DELETE_FLAG) // Record is already deleted
     {
@@ -179,4 +183,3 @@ void HealthcareSystem::deleteDoctor(const string &doctorID)
 
     cout << "Doctor with ID " << doctorID << " deleted successfully." << endl;
 }
-

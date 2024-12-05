@@ -9,7 +9,6 @@
 #include <algorithm>
 #include <fstream>
 
-
 using namespace std;
 
 struct PrimaryIndexRow
@@ -17,7 +16,7 @@ struct PrimaryIndexRow
   char Id[15];
   long long byteOffset;
   PrimaryIndexRow() {};
-  PrimaryIndexRow(const char* id, int byteOffset) : byteOffset(byteOffset)
+  PrimaryIndexRow(const char *id, int byteOffset) : byteOffset(byteOffset)
   {
     strcpy(Id, id);
   };
@@ -59,6 +58,9 @@ public:
   PrimaryIndex(string filePath)
   {
     this->filePath = filePath;
+    fstream file;
+    file.open(filePath, ios::out | ios::app);
+    file.close();
   }
 
   vector<PrimaryIndexRow> getVector()
@@ -106,7 +108,7 @@ public:
   long long getByteOffset(const char *id)
   {
     fstream file;
-    file.open(filePath);
+    file.open(filePath, ios::in);
     file.seekg(0, ios::end);
     int fileSize = file.tellg();
     file.seekg(0, ios::beg);
@@ -122,7 +124,7 @@ public:
       mid -= mid % sizeof(PrimaryIndexRow);
       // cout << "left " << left << " mid " << mid << " right " << right << endl;
       file.seekg(mid, ios::beg);
-      file.read((char *)&s, sizeof(s));
+      file.read((char *)&s, sizeof(PrimaryIndexRow));
       // cout << s.id << " " << s.RRN << endl;
       if (strcmp(s.Id, id) == 0)
       {
@@ -142,7 +144,7 @@ public:
     return -1;
   }
 
-  bool deleteID(const char* id)
+  bool deleteID(const char *id)
   {
     long long byteOffset = getByteOffset(id);
     if (byteOffset != -1)
