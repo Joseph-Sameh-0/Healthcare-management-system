@@ -1,11 +1,14 @@
 #include <iostream>
 #include <bits/stdc++.h>
+#include "HealthcareSystem.cpp"
 using namespace std;
 
-int main() {
+int main()
+{
     int choice;
-
-    do {
+    HealthcareSystem sys;
+    do
+    {
         cout << "Welcome to Hospital Management System" << endl;
         cout << "1. Add New Doctor" << endl;
         cout << "2. Add New Appointment" << endl;
@@ -21,39 +24,45 @@ int main() {
         cout << "Enter the number of your choice your choice: ";
         cin >> choice;
 
-        switch (choice) {
-            case 1:
-                // Add new doctor
-                break;
-            case 2:
-                // Add new appointment
-                break;
-            case 3:
-                // Update doctor name
-                break;
-            case 4:
-                // Update appointment date
-                break;
-            case 5:
-                // Delete appointment
-                break;
-            case 6:
-                // Delete Doctor
-                break;
-            case 7:
-                // Print doctor info
-                break;
-            case 8:
-                // Print appointment info
-                break;
-            case 9:
-                // Write query
-                break;
-            case 10:
-                cout << "Exiting the program..." << endl;
-                break;
-            default:
-                cout << "Invalid choice. Please try again." << endl;
+        switch (choice)
+        {
+        case 1:
+            // Add new doctor
+            sys.addDoctor("1", "jox", "alf maskn");
+            // sys.addDoctor("2", "joseph", "alf maskn");
+            // sys.printDoctor(sizeof(int) + sizeof(char));
+            // sys.printDoctor(sizeof(int) + sizeof(char)+16);
+
+            break;
+        case 2:
+            // Add new appointment
+            break;
+        case 3:
+            // Update doctor name
+            break;
+        case 4:
+            // Update appointment date
+            break;
+        case 5:
+            // Delete appointment
+            break;
+        case 6:
+            // Delete Doctor
+            break;
+        case 7:
+            // Print doctor info
+            break;
+        case 8:
+            // Print appointment info
+            break;
+        case 9:
+            // Write query
+            break;
+        case 10:
+            cout << "Exiting the program..." << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
         }
 
     } while (choice != 10);
