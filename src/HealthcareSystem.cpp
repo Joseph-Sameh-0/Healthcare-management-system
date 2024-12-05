@@ -73,6 +73,7 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
             }
             byteOffset = nextDeletedRecord;
         }
+        
     }
 
     // If no deleted records were suitable, append the new record to the end of the file
@@ -182,4 +183,61 @@ void HealthcareSystem::deleteDoctor(const string &doctorID)
     dIndex.deleteID(doctorID.c_str());
 
     cout << "Doctor with ID " << doctorID << " deleted successfully." << endl;
+}
+
+void HealthcareSystem::deleteAppointment(const string &AppointmentID)
+{
+// Check if the doctor exists in the index
+    int byteOffset = dIndex.getByteOffset(AppointmentID.c_str());
+    if (byteOffset == -1)
+    {
+        cout << "Error: Appointment with ID " << AppointmentID << " does not exist." << endl;
+        return;
+    }
+
+    // Open the file in binary read/write mode
+    fstream AppointmentFile("F:/college/File Managment/Healthcare/Healthcare-management-system/data/Appointments.txt", ios::in | ios::out | ios::app);
+    if (!AppointmentFile)
+    {
+        cerr << "Error: Could not open file." << endl;
+        return;
+    }
+
+    int firstDeletedRecord, nextDeletedRecord, recordSize;
+    char flag;
+
+    // Read the current head of the availability list
+    AppointmentFile.seekg(0, ios::beg);
+    AppointmentFile.read((char *)&firstDeletedRecord, sizeof(int));
+
+    // Seek to the byte offset of the record to be deleted
+    AppointmentFile.seekg(byteOffset, ios::beg);
+    AppointmentFile.get(flag);                                     // Read the flag
+    AppointmentFile.read((char *)&nextDeletedRecord, sizeof(int)); // Read the pointer to the next deleted record
+    AppointmentFile.read((char *)&recordSize, sizeof(int));        // Read the size of the record
+
+    if (flag == DELETE_FLAG) // Record is already deleted
+    {
+        cout << "Error: Appointment with ID " << AppointmentID << " is already deleted." << endl;
+        AppointmentFile.close();
+        return;
+    }
+
+    // Mark the record as deleted by writing the DELETE_FLAG ('*')
+    AppointmentFile.seekp(byteOffset, ios::beg);
+    AppointmentFile.put(DELETE_FLAG);
+
+    // Update the deleted record to point to the current head of the availability list
+    AppointmentFile.write((char *)&firstDeletedRecord, sizeof(int));
+
+    // Update the availability list head to this record's byte offset
+    AppointmentFile.seekp(0, ios::beg);
+    AppointmentFile.write((char *)&byteOffset, sizeof(int));
+
+    AppointmentFile.close();
+
+    // Remove the doctor from the primary index
+    dIndex.deleteID(AppointmentID.c_str());
+
+    cout << "Appointment with ID " << AppointmentID << " deleted successfully." << endl;
 }

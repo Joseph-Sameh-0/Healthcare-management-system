@@ -13,6 +13,7 @@ public:
     void printDoctor(int byteOffset);
     void addAppointment(const string &appointmentID, const string &date, const string &doctorID);
     void deleteDoctor (const string &doctorID);
+    void deleteAppointment (const string &AppointmentID);
     PrimaryIndex dIndex;
     PrimaryIndex aIndex;
     SecondaryIndex<char[30]> dSIndex;
