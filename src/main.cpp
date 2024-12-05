@@ -28,8 +28,9 @@ int main()
         {
         case 1:
             // Add new doctor
-            sys.addDoctor("1", "jox", "alf maskn");
+            // sys.addDoctor("1", "jox", "alf maskn");
             // sys.addDoctor("2", "joseph", "alf maskn");
+            sys.addDoctor("3", "hegazy", "alf maskn");
             // sys.printDoctor(sizeof(int) + sizeof(char));
             // sys.printDoctor(sizeof(int) + sizeof(char)+16);
 
@@ -44,10 +45,10 @@ int main()
             // Update appointment date
             break;
         case 5:
-            // Delete appointment
+            // delet appointment
             break;
         case 6:
-            // Delete Doctor
+            sys.deleteDoctor("1");
             break;
         case 7:
             // Print doctor info

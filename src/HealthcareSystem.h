@@ -9,10 +9,10 @@ using namespace std;
 
 class HealthcareSystem {
 public:
-    void addDoctor(const string &doctorID, const string &name, const string &address);
+    void addDoctor( const string &doctorID, const string &name, const string &address);
     void printDoctor(int byteOffset);
     void addAppointment(const string &appointmentID, const string &date, const string &doctorID);
-    void deleteDoctor (char id[15]);
+    void deleteDoctor (const string &doctorID);
     PrimaryIndex dIndex;
     PrimaryIndex aIndex;
     SecondaryIndex<char[30]> dSIndex;

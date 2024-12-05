@@ -11,22 +11,28 @@ using namespace std;
 
 void HealthcareSystem::addDoctor(const string &doctorID, const string &name, const string &address)
 {
-    // File for storing doctor records
-     fstream doctorFile("F:/college/File Managment/Healthcare/Healthcare-management-system/data/Doctors.txt", ios::in | ios::out | ios::binary);
 
-    if (!doctorFile) // Create file if it doesn't exist
+    if (dIndex.getByteOffset(doctorID.c_str()) == -1){
+        cout << "This Doctor is already exist" << endl; 
+        return;
+    }
+    // File for storing doctor records
+    fstream doctorFile;
+    doctorFile.open("F:/college/File Managment/Healthcare/Healthcare-management-system/data/Doctors.txt", ios::in | ios::out | ios::app);
+    doctorFile.seekg(0, ios::end);
+    int filesize = doctorFile.tellg();
+    if (filesize <= 0) // Create file if it doesn't exist
     {
         // Initialize the file with the avail list header
-        doctorFile.open("F:/college/File Managment/Healthcare/Healthcare-management-system/data/Doctors.txt", ios::out | ios::binary);
-        int availListOffset = -1; // Initial header (no deleted records)
+        // doctorFile.open("F:/college/File Managment/Healthcare/Healthcare-management-system/data/Doctors.txt",  ios::out | ios::binary);
+        int availListOffset = -1;                                // Initial header (no deleted records)
         doctorFile.write((char *)&availListOffset, sizeof(int)); // Write initial avail list
         doctorFile.write((char *)&"|", sizeof(char));            // Write initial avail list
-        doctorFile.close();
+        // doctorFile.close();
     }
-    doctorFile.open("F:/college/File Managment/Healthcare/Healthcare-management-system/data/Doctors.txt", ios::in | ios::out | ios::binary);
-    
+    // doctorFile.open("F:/college/File Managment/Healthcare/Healthcare-management-system/data/Doctors.txt", ios::in | ios::out | ios::binary);
 
-    string record = doctorID + "|" + name + "|" + address;
+    string record = doctorID + "|" + name + "|" + address + "\n";
     int recordSize = record.length();
     int firstDeletedRecord, nextDeletedRecord = -1, byteOffset = -1;
     char flag;
@@ -65,10 +71,9 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
             }
             byteOffset = nextDeletedRecord;
         }
-        
     }
 
-// If no deleted records were suitable, append the new record to the end of the file
+    // If no deleted records were suitable, append the new record to the end of the file
     doctorFile.seekp(0, ios::end);
     doctorFile.put(EMPTY_FLAG);
     int jj = -1;
@@ -78,7 +83,8 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
     doctorFile.close();
 
     // Update primary and secondary indexes
-    //     dIndex.add(doctorID.c_str(), byteOffset);
+    const char *DocId = doctorID.c_str();
+    dIndex.update_index(DocId, byteOffset);
     //     dSIndex.add(name.c_str(), doctorID.c_str());
 }
 
@@ -117,50 +123,60 @@ void HealthcareSystem::addAppointment(const string &appointmentID, const string 
     // Implementation goes here
 }
 
-void HealthcareSystem::deleteDoctor(char id[15])
+void HealthcareSystem::deleteDoctor(const string &doctorID)
 {
-    // File for storing doctor records
-    fstream doctorFile("F:/college/File Managment/Healthcare/Healthcare-management-system/data/Doctors.txt", ios::in | ios::out | ios::binary);
-
-    if (!doctorFile)
-    {
-        cerr << "Error: Could not open the Doctors file.\n";
-        return;
-    }
-
-    int byteOffset = dIndex.getByteOffset(id);
+    // Check if the doctor exists in the index
+    int byteOffset = dIndex.getByteOffset(doctorID.c_str());
     if (byteOffset == -1)
     {
-        cerr << "Error: Doctor with ID " << id << " not found.\n";
+        cout << "Error: Doctor with ID " << doctorID << " does not exist." << endl;
         return;
     }
 
-    doctorFile.seekg(byteOffset, ios::beg);
-    char flag;
-    doctorFile.get(flag);
-
-    if (flag == DELETE_FLAG)
+    // Open the file in binary read/write mode
+    fstream doctorFile("F:/college/File Managment/Healthcare/Healthcare-management-system/data/Doctors.txt", ios::in | ios::out | ios::binary);
+    if (!doctorFile)
     {
-        cerr << "Error: Doctor with ID " << id << " is already deleted.\n";
+        cerr << "Error: Could not open file." << endl;
         return;
     }
 
-    // Mark the record as deleted
-    int firstDeletedRecord = -1;
+    int firstDeletedRecord, nextDeletedRecord, recordSize;
+    char flag;
+
+    // Read the current head of the availability list
     doctorFile.seekg(0, ios::beg);
     doctorFile.read((char *)&firstDeletedRecord, sizeof(int));
 
-    doctorFile.seekp(byteOffset, ios::beg);
-    doctorFile.put(DELETE_FLAG);                                // Set delete flag
-    doctorFile.write((char *)&firstDeletedRecord, sizeof(int)); // Update the pointer to the next deleted record
+    // Seek to the byte offset of the record to be deleted
+    doctorFile.seekg(byteOffset, ios::beg);
+    doctorFile.get(flag);                              // Read the flag
+    doctorFile.read((char *)&nextDeletedRecord, sizeof(int)); // Read the pointer to the next deleted record
+    doctorFile.read((char *)&recordSize, sizeof(int));  // Read the size of the record
 
-    // Update the header with the new deleted record
+    if (flag == DELETE_FLAG) // Record is already deleted
+    {
+        cout << "Error: Doctor with ID " << doctorID << " is already deleted." << endl;
+        doctorFile.close();
+        return;
+    }
+
+    // Mark the record as deleted by writing the DELETE_FLAG ('*')
+    doctorFile.seekp(byteOffset, ios::beg);
+    doctorFile.put(DELETE_FLAG);
+
+    // Update the deleted record to point to the current head of the availability list
+    doctorFile.write((char *)&firstDeletedRecord, sizeof(int));
+
+    // Update the availability list head to this record's byte offset
     doctorFile.seekp(0, ios::beg);
     doctorFile.write((char *)&byteOffset, sizeof(int));
 
     doctorFile.close();
 
-    // Remove the record from indexes
-    // dIndex.remove(id);
-    // dSIndex.removeByPrimaryKey(id);
+    // Remove the doctor from the primary index
+    dIndex.deleteID(doctorID.c_str());
+
+    cout << "Doctor with ID " << doctorID << " deleted successfully." << endl;
 }
+

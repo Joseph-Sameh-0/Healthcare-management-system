@@ -1,7 +1,15 @@
 #ifndef PRIMARYINDEX
 #define PRIMARYINDEX
 
-#include "bits/stdc++.h"
+// #include "bits/stdc++.h"
+#include <iostream>
+#include <vector>
+#include <string>
+#include <string.h>
+#include <algorithm>
+#include <fstream>
+
+
 using namespace std;
 
 struct PrimaryIndexRow
@@ -9,7 +17,7 @@ struct PrimaryIndexRow
   char Id[15];
   long long byteOffset;
   PrimaryIndexRow() {};
-  PrimaryIndexRow(char id[], int byteOffset) : byteOffset(byteOffset)
+  PrimaryIndexRow(const char* id, int byteOffset) : byteOffset(byteOffset)
   {
     strcpy(Id, id);
   };
@@ -67,8 +75,15 @@ public:
     return v;
   }
 
-  void update_index(char id[], long long byteOffset)
+  void update_index(const char *id, long long byteOffset)
   {
+    long long offset = getByteOffset(id); // get the current offset of the id in the file
+    if (offset != -1)                     // if the id is already in the index
+    {
+      cout << "id already exists in the index" << endl;
+      return;
+    }
+
     fstream file;
     file.open(filePath, ios::out | ios::app);
     file.seekp(0, ios::end);
@@ -76,8 +91,8 @@ public:
     strcpy(studentIndex.Id, id);
     studentIndex.byteOffset = byteOffset;
     file.write((char *)&studentIndex, sizeof(studentIndex));
+    // cout << "primary index " << studentIndex.Id << " " << studentIndex.byteOffset << endl; // print the id and offset
     file.close();
-
     sortIndex();
   }
 
@@ -88,7 +103,7 @@ public:
     writeOnFile(v);
   }
 
-  long long getByteOffset(char id[])
+  long long getByteOffset(const char *id)
   {
     fstream file;
     file.open(filePath);
@@ -98,6 +113,9 @@ public:
 
     int left = 0, right = fileSize, mid;
     PrimaryIndexRow s;
+    if (fileSize == 0)
+      return -1;
+
     while (left <= right)
     {
       mid = left + (right - left) / 2;
@@ -113,6 +131,8 @@ public:
       else if (strcmp(s.Id, id) == -1)
       {
         left = file.tellg();
+        if (left >= fileSize)
+          return -1;
       }
       else
       {
@@ -122,7 +142,7 @@ public:
     return -1;
   }
 
-  bool deleteID(char id[])
+  bool deleteID(const char* id)
   {
     long long byteOffset = getByteOffset(id);
     if (byteOffset != -1)
