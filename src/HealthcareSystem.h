@@ -15,6 +15,8 @@ private:
 public:
     void addDoctor(const string &doctorID, const string &name, const string &address);
     void addAppointment(const string &appointmentID, const string &date, const string &doctorID);
+    void deleteDoctor (const string &doctorID);
+    void deleteAppointment (const string &AppointmentID);
     // Other methods: deleteDoctor, deleteAppointment, etc.
     PrimaryIndex dIndex;
     PrimaryIndex aIndex;
