@@ -171,8 +171,7 @@ void HealthcareSystem::updateAppointment(const string &appointmentID, const stri
         appointmentsFile.close();
 }
 
-}
-void addAppointment(const string &appointmentID, const string &doctorID, const string &patientID, const string &date, const string &time)
+}void addAppointment(const string &appointmentID, const string &doctorID, const string &date)
 {
     fstream appointmentFile;
     appointmentFile.open("Appointments.txt", ios::in | ios::out);  // Open file for reading and writing
@@ -191,7 +190,7 @@ void addAppointment(const string &appointmentID, const string &doctorID, const s
         appointmentFile.put('|');  // Optional separator
     }
 
-    string record = appointmentID + "|" + doctorID + "|" + patientID + "|" + date + "|" + time;
+    string record = appointmentID + "|" + date + "|" + doctorID;
     int recordSize = record.length();
     int firstDeletedRecord, nextDeletedRecord = -1, byteOffset = -1;
     char flag;
