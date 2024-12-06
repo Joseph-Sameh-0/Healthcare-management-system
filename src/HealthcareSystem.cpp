@@ -5,6 +5,9 @@
 
 using namespace std;
 
+#define EMPTY_FLAG ' '
+#define DELETE_FLAG '*'
+
 // void HealthcareSystem::addDoctor(const string &doctorID, const string &name, const string &address) {
 //     fstream doctorsFile("../data/Doctors.txt", ios::app);
 
@@ -132,7 +135,7 @@ void HealthcareSystem::updateDoctor(const string& id, const string& newName, con
 
     cout << "Doctor information updated successfully." << endl;
 }
-
+}
 void HealthcareSystem::updateAppointment(const string &appointmentID, const string &newDate, const string &newDoctorID) {
     fstream appointmentsFile("../data/Appointments.txt", ios::in | ios::out | ios::binary);
 
@@ -168,7 +171,7 @@ void HealthcareSystem::updateAppointment(const string &appointmentID, const stri
         appointmentsFile.close();
 }
 
-
+}
 void addAppointment(const string &appointmentID, const string &doctorID, const string &patientID, const string &date, const string &time)
 {
     fstream appointmentFile;
