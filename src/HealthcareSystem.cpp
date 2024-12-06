@@ -7,13 +7,20 @@
 #define DELETE_FLAG '*'
 #define EMPTY_FLAG ' '
 
-void HealthcareSystem::addAppointment(const string &appointmentID, const string &doctorID, const string &patientID, const string &date, const string &time)
+void HealthcareSystem::addAppointment(const string &appointmentID, const string &doctorID, const string &date)
 {
+    if (aIndex.getByteOffset(appointmentID.c_str()) != -1)
+    {
+        cout << "Appointment ID already exists." << endl;
+        return;
+    }
+
     fstream appointmentFile;
     appointmentFile.open("../data/Appointments.txt", ios::in | ios::out); // Open file for reading and writing
     if (!appointmentFile.is_open())
     {
         cout << "Failed to open file." << endl;
+        return;
     }
 
     // Initialize file if empty
@@ -27,7 +34,7 @@ void HealthcareSystem::addAppointment(const string &appointmentID, const string 
         appointmentFile.put('|');                                     // Optional separator
     }
 
-    string record = appointmentID + "|" + doctorID + "|" + patientID + "|" + date + "|" + time;
+    string record = appointmentID + "|" + date + "|" + doctorID + "\n\n";
     int recordSize = record.length();
     int firstDeletedRecord, nextDeletedRecord = -1, byteOffset = -1;
     char flag;
@@ -67,6 +74,10 @@ void HealthcareSystem::addAppointment(const string &appointmentID, const string 
 
                 // Mark the reused record as active
                 appointmentFile.seekp(byteOffset, ios::beg);
+
+                aIndex.add(appointmentID.c_str(), byteOffset);
+                aSIndex.add(doctorID.c_str(), appointmentID.c_str());
+
                 appointmentFile.put(EMPTY_FLAG); // Mark record as active
                 int jj = -1;
                 appointmentFile.write((char *)&jj, sizeof(int)); // Clear nextDeletedRecord
@@ -100,6 +111,9 @@ void HealthcareSystem::addAppointment(const string &appointmentID, const string 
 
     // If no deleted records were suitable, append the record to the end of the file
     appointmentFile.seekp(0, ios::end);
+    aIndex.add(appointmentID.c_str(), appointmentFile.tellp());
+    aSIndex.add(doctorID.c_str(), appointmentID.c_str());
+
     appointmentFile.put(EMPTY_FLAG); // Mark new record as active
     int jj = -1;
     appointmentFile.write((char *)&jj, sizeof(int));         // No nextDeletedRecord
@@ -135,7 +149,6 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
         doctorFile.write((char *)&availListOffset, sizeof(int)); // Write initial avail list
         doctorFile.put('|');                                     // Optional separator
     }
-
 
     string record = doctorID + "|" + name + "|" + address + "\n\n";
     int recordSize = record.length();
@@ -289,7 +302,7 @@ void HealthcareSystem::deleteAppointment(const string &AppointmentID)
     AppointmentFile.close();
 
     // Remove the doctor from the primary index
-    aIndex.deleteID(AppointmentID.c_str());
+    // aIndex.deleteID(AppointmentID.c_str());
     // aSIndex.deleteId(AppointmentID.c_str());
     cout << "Appointment with ID " << AppointmentID << " deleted successfully." << endl;
 }
