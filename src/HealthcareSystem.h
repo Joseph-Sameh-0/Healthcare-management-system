@@ -18,7 +18,7 @@ class HealthcareSystem
 private:
 public:
     void addDoctor(const string &doctorID, const string &name, const string &address);
-    void addAppointment(const string &appointmentID, const string &date, const string &doctorID);
+    void addAppointment(const string &appointmentID, const string &doctorID, const string &patientID, const string &date, const string &time);
     void deleteDoctor(const string &doctorID);
     void deleteAppointment(const string &AppointmentID);
     // Other methods: deleteDoctor, deleteAppointment, etc.
@@ -32,6 +32,11 @@ public:
         aIndex = PrimaryIndex("../data/PrimaryIndexAppointments.txt");
         dSIndex = SecondaryIndex<char[30]>("../data/SecondaryIndexDoctors.txt", "../data/LinkedListDoctors.txt");
         aSIndex = SecondaryIndex<char[15]>("../data/SecondaryIndexAppointments.txt", "../data/LinkedListAppointments.txt");
+        fstream file;
+        file.open("../data/Doctors.txt", ios::in | ios::out | ios::app);
+        file.close();
+        file.open("../data/Appointments.txt", ios::in | ios::out | ios::app);
+        file.close();
     }
     Query parseQuery(const string &query);
     void executeQuery(Query query);

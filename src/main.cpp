@@ -31,7 +31,7 @@ int main()
         {
         case 1:
             // Add new doctor
-            cout << sys.dIndex.getByteOffset("1") << endl;
+            sys.addDoctor("1", "Dr.e", "12");
             break;
         case 2:
             // Add new appointment
@@ -47,6 +47,7 @@ int main()
             break;
         case 6:
             // Delete Doctor
+            sys.deleteDoctor("1");
             break;
         case 7:
             // Print doctor info
