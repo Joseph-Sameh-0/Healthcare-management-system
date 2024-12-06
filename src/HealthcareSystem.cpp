@@ -461,10 +461,6 @@ void HealthcareSystem::parseQuery(const string &query)
         parsedQuery.condition[2] = conditionMatch[2];
         parsedQuery.condition[3] = conditionMatch[3];
     }
-    else
-    {
-        cout << "No match found!" << endl;
-    }
 
     executeQuery(parsedQuery);
 }
@@ -500,6 +496,19 @@ void HealthcareSystem::executeQuery(Query query)
 
             }
         }
+        else{
+            vector<long long> byteOffSets = dIndex.getAllOffset();
+            if (byteOffSets.empty())
+            {
+                cout << "No Doctors" << endl;
+                return;
+            }
+            for (int i = 0; i < byteOffSets.size(); i++)
+            {
+                getDoctorData(file, query, byteOffSets[i]);
+
+            }
+        }
         file.close();
     }
     else if (query.source == "Appointments")
@@ -528,6 +537,19 @@ void HealthcareSystem::executeQuery(Query query)
             {
                 long long byteOffSet = aIndex.getByteOffset(appointmentIDs[i].c_str());
                 getAppointmentData(file, query, byteOffSet);
+            }
+        }
+        else{
+            vector<long long> byteOffSets = aIndex.getAllOffset();
+            if (byteOffSets.empty())
+            {
+                cout << "No Appointments" << endl;
+                return;
+            }
+            for (int i = 0; i < byteOffSets.size(); i++)
+            {
+                getAppointmentData(file, query, byteOffSets[i]);
+
             }
         }
         file.close();
