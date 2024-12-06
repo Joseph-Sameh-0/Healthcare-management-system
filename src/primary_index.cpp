@@ -206,5 +206,18 @@ public:
     file.close();
     sortIndex();
   }
+
+  vector<long long> getAllOffset(){
+    vector<long long> v;
+    fstream file;
+    file.open(filePath, ios::in);
+    PrimaryIndexRow s;
+    while (file.read((char *)&s, sizeof(s)))
+    {
+      v.push_back(s.byteOffset);
+    }
+    file.close();
+    return v;
+  }
 };
 #endif
