@@ -1,8 +1,11 @@
 #include <iostream>
 #include <bits/stdc++.h>
+#include "HealthcareSystem.cpp"
+
 using namespace std;
 
 int main() {
+    HealthcareSystem sys;
     int choice;
 
     do {

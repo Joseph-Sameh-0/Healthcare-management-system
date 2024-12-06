@@ -2,16 +2,18 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include <sstream>
 #define DELETE_FLAG '*'
 #define EMPTY_FLAG ' '
 
 using namespace std;
 
-void HealthcareSystem::addDoctor(const string &doctorID, const string &name, const string &address) {
+void HealthcareSystem::addDoctor(const string &doctorID, const string &name, const string &address)
+{
     fstream doctorsFile("../data/Doctors.txt", ios::app);
 
-
-    if (!doctorsFile) {
+    if (!doctorsFile)
+    {
         cerr << "Error: Could not open Doctors file.\n";
         return;
     }
@@ -19,7 +21,7 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
     // Create the record with length indicator
     string record = doctorID + "|" + name + "|" + address;
     int recordLength = record.length();
-    string recordWithLength = to_string(recordLength+2) + "|" + record + "\n";
+    string recordWithLength = to_string(recordLength + 2) + "|" + record + "\n";
 
     // Write the record to the file
     doctorsFile << recordWithLength;
@@ -31,21 +33,24 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
     updateSecondaryIndex("../data/SecondaryIndexDoctors.txt", name, doctorID);
 }
 
-void HealthcareSystem::updatePrimaryIndex(const string &file, const string &key, const long long byteOffset) {
+void HealthcareSystem::updatePrimaryIndex(const string &file, const string &key, const long long byteOffset)
+{
     (void)file;
     (void)key;
     (void)byteOffset;
     // Implementation goes here
 }
 
-void HealthcareSystem::updateSecondaryIndex(const string &file, const string &secondaryKey, const string &primaryKey) {
+void HealthcareSystem::updateSecondaryIndex(const string &file, const string &secondaryKey, const string &primaryKey)
+{
     (void)file;
     (void)secondaryKey;
     (void)primaryKey;
     // Implementation goes here
 }
 
-void HealthcareSystem::addAppointment(const string &appointmentID, const string &date, const string &doctorID) {
+void HealthcareSystem::addAppointment(const string &appointmentID, const string &date, const string &doctorID)
+{
     (void)appointmentID;
     (void)date;
     (void)doctorID;
@@ -63,7 +68,7 @@ void HealthcareSystem::deleteAppointment(const string &AppointmentID)
     }
 
     // Open the file in binary read/write mode
-    fstream AppointmentFile("../data/Appointments.txt", ios::in | ios::out );
+    fstream AppointmentFile("../data/Appointments.txt", ios::in | ios::out);
     if (!AppointmentFile)
     {
         cerr << "Error: Could not open file." << endl;
@@ -89,6 +94,17 @@ void HealthcareSystem::deleteAppointment(const string &AppointmentID)
         AppointmentFile.close();
         return;
     }
+
+    char record[recordSize];
+    AppointmentFile.read((char *)&record, recordSize);
+    stringstream s(record);
+    string docId;
+    getline(s, docId, '|');
+    getline(s, docId, '|');
+    getline(s, docId, '\n');
+    // cout << docId << endl;                             // Print the name of the doctor being deleted
+    dIndex.deleteID(AppointmentID.c_str());                 // Remove the doctor from the primary index
+    dSIndex.deleteId(docId.c_str(), AppointmentID.c_str()); // Delete the doctor from the doctor index
 
     // Mark the record as deleted by writing the DELETE_FLAG ('*')
     AppointmentFile.seekp(byteOffset, ios::beg);
@@ -147,6 +163,16 @@ void HealthcareSystem::deleteDoctor(const string &doctorID)
         return;
     }
 
+    char record[recordSize];
+    doctorFile.read((char *)&record, recordSize);
+    stringstream s(record);
+    string dName;
+    getline(s, dName, '|');
+    getline(s, dName, '|');
+    // cout << dName << endl;                             // Print the name of the doctor being deleted
+    dIndex.deleteID(doctorID.c_str());                 // Remove the doctor from the primary index
+    dSIndex.deleteId(dName.c_str(), doctorID.c_str()); // Delete the doctor from the doctor index
+
     // Mark the record as deleted by writing the DELETE_FLAG ('*')
     doctorFile.seekp(byteOffset, ios::beg);
     doctorFile.put(DELETE_FLAG);
@@ -159,10 +185,6 @@ void HealthcareSystem::deleteDoctor(const string &doctorID)
     doctorFile.write((char *)&byteOffset, sizeof(int));
 
     doctorFile.close();
-
-    // Remove the doctor from the primary index
-    dIndex.deleteID(doctorID.c_str());
-    // dSIndex.deleteId( doctorID.c_str());
 
     cout << "Doctor with ID " << doctorID << " deleted successfully." << endl;
 }
