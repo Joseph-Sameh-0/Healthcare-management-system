@@ -418,6 +418,67 @@ void HealthcareSystem::updateDoctor(const string &id, const string &newName, con
     dSIndex.editKey(oldName.c_str(), newName.c_str(), id.c_str());
 }
 
+void HealthcareSystem::updateAppointment(const string &id, const string &newDoctorID, const string &newDate)
+{
+    fstream appointmentsFile("../data/Appointments.txt", ios::in | ios::out | ios::binary);
+
+    // Get the byte offset of the appointment record using the index
+    long long byteOffset = aIndex.getByteOffset((char *)id.c_str());
+    if (byteOffset == -1)
+    {
+        cout << "Appointment not found!" << endl;
+        return;
+    }
+
+    // Read the current record size
+    int recordSize;
+    appointmentsFile.seekg(byteOffset + sizeof(char) + sizeof(int), ios::beg);
+    appointmentsFile.read((char *)&recordSize, sizeof(int));
+
+    // Read the current record
+    const int recSize = recordSize;
+    char oldRecord[recSize];
+    appointmentsFile.read(oldRecord, recSize);
+
+    // Extract the old details
+    stringstream s(oldRecord);
+    string oldDoctorID;
+    getline(s, oldDoctorID, '|'); // Skip appointment ID
+    getline(s, oldDoctorID, '|');
+    getline(s, oldDoctorID, '\n');
+
+    // Create the new record
+    string record = id + "|" + newDate + "|" + newDoctorID + "\n";
+    short newRecordSize = record.length();
+
+    if (newRecordSize <= recordSize)
+    {
+        // Update in place if new record fits
+        appointmentsFile.seekp(byteOffset, ios::beg);
+
+        appointmentsFile.put(EMPTY_FLAG);
+        int jj = -1;
+        appointmentsFile.write((char *)&jj, sizeof(int)); // Clear nextDeletedRecord
+        // Write the new record data
+        appointmentsFile.write((char *)&recordSize, sizeof(int));
+        appointmentsFile.write(record.c_str(), recordSize);
+        appointmentsFile.close();
+    }
+    else
+    {
+        // Delete old record and add a new one at the end
+        deleteAppointment(id);
+        addAppointment(id, newDoctorID, newDate);
+        cout << "Appointment information updated successfully." << endl;
+        return;
+    }
+
+    // Update indexes
+    aIndex.deleteID((char *)id.c_str());
+    aIndex.add((char *)id.c_str(), byteOffset);
+    aSIndex.editKey(oldDoctorID.c_str(), newDoctorID.c_str(), id.c_str());
+}
+
 // query handling
 void HealthcareSystem::parseQuery(const string &query)
 {
