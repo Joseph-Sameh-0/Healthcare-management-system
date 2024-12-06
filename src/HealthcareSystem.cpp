@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <sstream>
+#include <regex>
 #define DELETE_FLAG '*'
 #define EMPTY_FLAG ' '
 
@@ -168,4 +169,186 @@ void HealthcareSystem::deleteDoctor(const string &doctorID)
     doctorFile.close();
 
     cout << "Doctor with ID " << doctorID << " deleted successfully." << endl;
+}
+
+// query handling
+Query HealthcareSystem::parseQuery(const string &query)
+{
+    Query parsedQuery;
+
+    // Extract target using regex
+    regex targetRegex("Select\\s+(.*)\\s+from");
+    smatch targetMatch;
+    if (regex_search(query, targetMatch, targetRegex))
+    {
+        parsedQuery.target = targetMatch[1].str();
+    }
+
+    // Extract source using regex
+    regex sourceRegex("from\\s+(\\w+)");
+    smatch sourceMatch;
+    if (regex_search(query, sourceMatch, sourceRegex))
+    {
+        parsedQuery.source = sourceMatch[1].str();
+    }
+
+    // Extract condition using regex
+    regex conditionRegex("where\\s+(\\w+)\\s*(=|!=|>|<|>=|<=)\\s*'([^']*)'");
+    smatch conditionMatch;
+
+    if (regex_search(query, conditionMatch, conditionRegex))
+    {
+        parsedQuery.condition[0] = conditionMatch[0];
+        parsedQuery.condition[1] = conditionMatch[1];
+        parsedQuery.condition[2] = conditionMatch[2];
+        parsedQuery.condition[3] = conditionMatch[3];
+    }
+    else
+    {
+        cout << "No match found!" << endl;
+    }
+
+    executeQuery(parsedQuery);
+}
+
+void HealthcareSystem::executeQuery(Query query)
+{
+    if (query.source == "Doctors")
+    {
+        ifstream file;
+        file.open("../data/Doctors.txt");
+        if (query.condition[1] == "DoctorID")
+        {
+            long long byteOffSet = dIndex.getByteOffset(query.condition[3].c_str());
+            if (byteOffSet == -1)
+            {
+                cout << "Doctor is not found" << endl;
+                return;
+            }
+            getDoctorData(file, query, byteOffSet);
+        }
+        else if (query.condition[1] == "DoctorName")
+        {
+            vector<string> doctorIDs = dSIndex.getIds(query.condition[3].c_str());
+            if (doctorIDs.empty())
+            {
+                cout << "doctor is not found" << endl;
+                return;
+            }
+            for (int i = 0; i < doctorIDs.size(); i++)
+            {
+                long long byteOffSet = dIndex.getByteOffset(doctorIDs[i].c_str());
+                getDoctorData(file, query, byteOffSet);
+            }
+        }
+        file.close();
+    }
+    else if (query.source == "Appointments")
+    {
+        ifstream file;
+        file.open("data/Appointments.txt");
+        if (query.condition[1] == "AppointmentID")
+        {
+            long long byteOffSet = aIndex.getByteOffset(query.condition[3].c_str());
+            if (byteOffSet == -1)
+            {
+                cout << "Appointment is not found" << endl;
+                return;
+            }
+            getAppointmentData(file, query, byteOffSet);
+        }
+        else if (query.condition[1] == "DoctorID")
+        {
+            vector<string> appointmentIDs = aSIndex.getIds(query.condition[3].c_str());
+            if (appointmentIDs.empty())
+            {
+                cout << "doctor is not found" << endl;
+                return;
+            }
+            for (int i = 0; i < appointmentIDs.size(); i++)
+            {
+                long long byteOffSet = aIndex.getByteOffset(appointmentIDs[i].c_str());
+                getAppointmentData(file, query, byteOffSet);
+            }
+        }
+        file.close();
+    }
+}
+
+void HealthcareSystem::getDoctorData(ifstream &file, Query query, long long byteOffSet)
+{
+    file.open("../data/Doctors.txt");
+    file.seekg(byteOffSet + sizeof(char), ios::beg);
+    int recordSize;
+    file.read((char *)recordSize, sizeof(int));
+    file.read((char *)recordSize, sizeof(int));
+    char *line;
+    file.read((char *)line, recordSize);
+    if (query.target == "all")
+    {
+        cout << line << endl;
+    }
+    else if (query.target == "DoctorID")
+    {
+        istringstream iss(line);
+        string field;
+        getline(iss, field, '|');
+        cout << field << endl;
+    }
+    else if (query.target == "DoctorName")
+    {
+        istringstream iss(line);
+        string field;
+        getline(iss, field, '|');
+        getline(iss, field, '|');
+        cout << field << endl;
+    }
+    else if (query.target == "DoctorAddress")
+    {
+        istringstream iss(line);
+        string field;
+        getline(iss, field, '|');
+        getline(iss, field, '|');
+        getline(iss, field, '\n');
+        cout << field << endl;
+    }
+}
+
+void HealthcareSystem::getAppointmentData(ifstream &file, Query query, long long byteOffSet)
+{
+    file.seekg(byteOffSet + sizeof(char), ios::beg);
+    int recordSize;
+    file.read((char *)recordSize, sizeof(int));
+    file.read((char *)recordSize, sizeof(int));
+    const int size = recordSize;
+    char line[size];
+    file.read((char *)line, recordSize);
+    if (query.target == "all")
+    {
+        cout << line << endl;
+    }
+    else if (query.target == "AppointmentID")
+    {
+        istringstream iss(line);
+        string field;
+        getline(iss, field, '|');
+        cout << field << endl;
+    }
+    else if (query.target == "AppointmentDate")
+    {
+        istringstream iss(line);
+        string field;
+        getline(iss, field, '|');
+        getline(iss, field, '|');
+        cout << field << endl;
+    }
+    else if (query.target == "DoctorID")
+    {
+        istringstream iss(line);
+        string field;
+        getline(iss, field, '|');
+        getline(iss, field, '|');
+        getline(iss, field, '\n');
+        cout << field << endl;
+    }
 }

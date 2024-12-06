@@ -4,11 +4,14 @@
 
 using namespace std;
 
-int main() {
+int main()
+{
     HealthcareSystem sys;
     int choice;
-
-    do {
+    string userQuery;
+    Query parsedQuery;
+    do
+    {
         cout << "Welcome to Hospital Management System" << endl;
         cout << "1. Add New Doctor" << endl;
         cout << "2. Add New Appointment" << endl;
@@ -24,39 +27,42 @@ int main() {
         cout << "Enter the number of your choice your choice: ";
         cin >> choice;
 
-        switch (choice) {
-            case 1:
-                // Add new doctor
-                break;
-            case 2:
-                // Add new appointment
-                break;
-            case 3:
-                // Update doctor name
-                break;
-            case 4:
-                // Update appointment date
-                break;
-            case 5:
-                // Delete appointment
-                break;
-            case 6:
-                // Delete Doctor
-                break;
-            case 7:
-                // Print doctor info
-                break;
-            case 8:
-                // Print appointment info
-                break;
-            case 9:
-                // Write query
-                break;
-            case 10:
-                cout << "Exiting the program..." << endl;
-                break;
-            default:
-                cout << "Invalid choice. Please try again." << endl;
+        switch (choice)
+        {
+        case 1:
+            // Add new doctor
+            cout << sys.dIndex.getByteOffset("1") << endl;
+            break;
+        case 2:
+            // Add new appointment
+            break;
+        case 3:
+            // Update doctor name
+            break;
+        case 4:
+            // Update appointment date
+            break;
+        case 5:
+            // Delete appointment
+            break;
+        case 6:
+            // Delete Doctor
+            break;
+        case 7:
+            // Print doctor info
+            break;
+        case 8:
+            // Print appointment info
+            break;
+        case 9:
+            userQuery = "Select all from Doctors where DoctorID = '1'";
+            parsedQuery = sys.parseQuery(userQuery);
+            break;
+        case 10:
+            cout << "Exiting the program..." << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
         }
 
     } while (choice != 10);
