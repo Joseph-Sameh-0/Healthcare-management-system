@@ -35,8 +35,8 @@ public:
     }
     Query parseQuery(const string &query);
     void executeQuery(Query query);
-    void getDoctorData(ifstream &file, Query query, long long byteOffSet);
-    void getAppointmentData(ifstream &file, Query query, long long byteOffSet);
+    void getDoctorData(Query query, long long byteOffSet);
+    void getAppointmentData(Query query, long long byteOffSet);
 };
 
 #endif
