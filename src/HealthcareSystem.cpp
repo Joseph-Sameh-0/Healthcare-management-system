@@ -323,11 +323,10 @@ void HealthcareSystem::getAppointmentData(Query query, long long byteOffSet)
     file.open("../data/Appointments.txt");
     file.seekg(byteOffSet + sizeof(char), ios::beg);
     int recordSize;
-    file.read((char *)recordSize, sizeof(int));
-    file.read((char *)recordSize, sizeof(int));
-    const int size = recordSize;
-    char line[size];
-    file.read((char *)line, recordSize);
+    file.read((char *)&recordSize, sizeof(int));
+    file.read((char *)&recordSize, sizeof(int));
+    char* line;
+    file.read(line, recordSize);
     if (query.target == "all")
     {
         cout << line << endl;
