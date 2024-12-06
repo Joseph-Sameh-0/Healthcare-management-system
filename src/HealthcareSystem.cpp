@@ -285,8 +285,8 @@ void HealthcareSystem::deleteAppointment(const string &AppointmentID)
     getline(s, docId, '|');
     getline(s, docId, '\n');
     // cout << docId << endl;                             // Print the name of the doctor being deleted
-    aIndex.deleteID(AppointmentID.c_str());                 // Remove the doctor from the primary index
-    aSIndex.deleteId(docId.c_str(), AppointmentID.c_str()); // Delete the doctor from the doctor index
+    aIndex.deleteID(AppointmentID.c_str());                 // Remove the appointment from the primary index
+    aSIndex.deleteId(docId.c_str(), AppointmentID.c_str()); // Delete the appointment from the doctor index
 
     // Mark the record as deleted by writing the DELETE_FLAG ('*')
     AppointmentFile.seekp(byteOffset, ios::beg);
@@ -300,10 +300,6 @@ void HealthcareSystem::deleteAppointment(const string &AppointmentID)
     AppointmentFile.write((char *)&byteOffset, sizeof(int));
 
     AppointmentFile.close();
-
-    // Remove the doctor from the primary index
-    // aIndex.deleteID(AppointmentID.c_str());
-    // aSIndex.deleteId(AppointmentID.c_str());
     cout << "Appointment with ID " << AppointmentID << " deleted successfully." << endl;
 }
 
@@ -414,13 +410,6 @@ void HealthcareSystem::updateDoctor(const string &id, const string &newName, con
         addDoctor(id, newName, newAddress);
         cout << "Doctor information updated successfully." << endl;
         return;
-
-        // doctorsFile.seekp(0, ios::end);
-        // byteOffset = doctorsFile.tellp();
-        // string recordWithLength = record;
-        // recordWithLength.insert(0, string((char *)&newRecordSize, sizeof(newRecordSize)));
-        // doctorsFile.write(recordWithLength.c_str(), recordWithLength.length());
-        // doctorsFile.close();
     }
 
     // Update indexes
