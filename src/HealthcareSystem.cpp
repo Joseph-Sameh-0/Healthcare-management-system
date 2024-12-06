@@ -365,6 +365,70 @@ void HealthcareSystem::deleteDoctor(const string &doctorID)
     cout << "Doctor with ID " << doctorID << " deleted successfully." << endl;
 }
 
+void HealthcareSystem::updateDoctor(const string &id, const string &newName, const string &newAddress)
+{
+    fstream doctorsFile("../data/Doctors.txt", ios::in | ios::out | ios::binary);
+
+    long long byteOffset = dIndex.getByteOffset((char *)id.c_str());
+    if (byteOffset == -1)
+    {
+        cout << "Doctor not found!" << endl;
+        return;
+    }
+
+    // Read the current record size
+    int recordSize;
+    doctorsFile.seekg(byteOffset + sizeof(char) + sizeof(int), ios::beg);
+    doctorsFile.read((char *)&recordSize, sizeof(int));
+
+    const int recSize = recordSize;
+    char oldRecord[recSize];
+    doctorsFile.read(oldRecord, recSize);
+    stringstream s(oldRecord);
+    string oldName;
+    getline(s, oldName, '|');
+    getline(s, oldName, '|');
+
+    // Create the new record
+    string record = id + "|" + newName + "|" + newAddress + "\n";
+    short newRecordSize = record.length();
+
+    if (newRecordSize <= recordSize)
+    {
+        // Update in place if new record fits
+        doctorsFile.seekp(byteOffset, ios::beg);
+
+        doctorsFile.put(EMPTY_FLAG);
+        int jj = -1;
+        doctorsFile.write((char *)&jj, sizeof(int)); // Clear nextDeletedRecord
+        // Write the new record data
+        doctorsFile.write((char *)&recordSize, sizeof(int));
+        doctorsFile.write(record.c_str(), recordSize);
+        doctorsFile.close();
+
+    }
+    else
+    {
+        // Delete old record and add new one at the end
+        deleteDoctor(id);
+        addDoctor(id, newName, newAddress);
+        cout << "Doctor information updated successfully." << endl;
+        return;
+
+        // doctorsFile.seekp(0, ios::end);
+        // byteOffset = doctorsFile.tellp();
+        // string recordWithLength = record;
+        // recordWithLength.insert(0, string((char *)&newRecordSize, sizeof(newRecordSize)));
+        // doctorsFile.write(recordWithLength.c_str(), recordWithLength.length());
+        // doctorsFile.close();
+    }
+
+    // Update indexes
+    dIndex.deleteID((char *)id.c_str());
+    dIndex.add((char *)id.c_str(), byteOffset);
+    dSIndex.editKey(oldName.c_str(), newName.c_str(), id.c_str());
+}
+
 // query handling
 Query HealthcareSystem::parseQuery(const string &query)
 {
