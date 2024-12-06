@@ -243,7 +243,7 @@ public:
     return ids;
   }
 
-  bool edit(const char *key, const char *oldId, const char *newId)
+  bool editId(const char *key, const char *oldId, const char *newId)
   {
     long long position = getPosition(key);
     if (position == -1) // key not found
@@ -257,12 +257,46 @@ public:
       file.open(filePath, ios::in | ios::out);
       file.seekg(position, ios::beg); // seek to the record
       SecondaryIndexRow<T> studentIndex;
-      file.read((char *)&studentIndex, sizeof(studentIndex)); // read the record
+      file.read((char *)&studentIndex, sizeof(studentIndex));  // read the record
       bool edited = list.edit(oldId, newId, studentIndex.RRN); // edit the id in the list
       file.close();
       return edited; // return true if the id is edited
-
     }
   }
+
+  bool editTheKey(const char *oldKey, const char *newKey)
+  {
+    long long position = getPosition(oldKey);
+    if (position == -1) // key not found
+    {
+      cout << "key " << oldKey << " not found" << endl;
+      return false;
+    }
+
+    fstream file;
+    file.open(filePath, ios::in | ios::out);
+    file.seekg(position, ios::beg); // seek to the record
+    SecondaryIndexRow<T> studentIndex;
+    file.read((char *)&studentIndex, sizeof(studentIndex)); // read the record
+    strcpy(studentIndex.Key, newKey);
+    file.seekp(position, ios::beg);
+    file.write((char *)&studentIndex, sizeof(studentIndex)); // write the record with new key
+    file.close();
+    return true;
+  }
+
+  bool editKey(const char *oldKey, const char *newKey, const char *id)
+  {
+    long long position = getPosition(oldKey);
+    if (position == -1) // key not found
+    {
+      cout << "key " << oldKey << " not found" << endl;
+      return false;
+    }
+    deleteId(oldKey, id);
+    add(newKey, id);
+    return true;
+  }
+
 };
 #endif

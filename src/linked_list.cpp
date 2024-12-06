@@ -186,7 +186,7 @@ public:
     }
 
     long long rowRRN = v[rowIndex - 1].RRN; // get the actual RRN of the record
-    if (rowIndex == (v.size() - 1))         // if the id to be deleted is the last record
+    if (rowIndex == (int)(v.size() - 1))         // if the id to be deleted is the last record
     {
       // delete the last record
       deleteRow(rowRRN);
