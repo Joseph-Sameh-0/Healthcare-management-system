@@ -26,27 +26,6 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
     // Write the record to the file
     doctorsFile << recordWithLength;
     doctorsFile.close();
-
-    // Update indexes
-    updatePrimaryIndex("../data/PrimaryIndexDoctors.txt", doctorID, record.length()); // TODO: update with byte offset after calculate it
-
-    updateSecondaryIndex("../data/SecondaryIndexDoctors.txt", name, doctorID);
-}
-
-void HealthcareSystem::updatePrimaryIndex(const string &file, const string &key, const long long byteOffset)
-{
-    (void)file;
-    (void)key;
-    (void)byteOffset;
-    // Implementation goes here
-}
-
-void HealthcareSystem::updateSecondaryIndex(const string &file, const string &secondaryKey, const string &primaryKey)
-{
-    (void)file;
-    (void)secondaryKey;
-    (void)primaryKey;
-    // Implementation goes here
 }
 
 void HealthcareSystem::addAppointment(const string &appointmentID, const string &date, const string &doctorID)
@@ -95,7 +74,8 @@ void HealthcareSystem::deleteAppointment(const string &AppointmentID)
         return;
     }
 
-    char record[recordSize];
+    const int recSize = recordSize;
+    char record[recSize];
     AppointmentFile.read((char *)&record, recordSize);
     stringstream s(record);
     string docId;
@@ -163,7 +143,8 @@ void HealthcareSystem::deleteDoctor(const string &doctorID)
         return;
     }
 
-    char record[recordSize];
+    const int recSize = recordSize;
+    char record[recSize];
     doctorFile.read((char *)&record, recordSize);
     stringstream s(record);
     string dName;

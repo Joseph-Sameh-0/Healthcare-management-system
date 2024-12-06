@@ -9,8 +9,6 @@ using namespace std;
 class HealthcareSystem
 {
 private:
-    void updatePrimaryIndex(const string &file, const string &key, const long long byteOffset);
-    void updateSecondaryIndex(const string &file, const string &secondaryKey, const string &primaryKey);
 
 public:
     void addDoctor(const string &doctorID, const string &name, const string &address);
