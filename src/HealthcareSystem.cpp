@@ -2,6 +2,8 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#define DELETE_FLAG '*'
+#define EMPTY_FLAG ' '
 
 using namespace std;
 
@@ -103,6 +105,7 @@ void HealthcareSystem::deleteAppointment(const string &AppointmentID)
 
     // Remove the doctor from the primary index
     aIndex.deleteID(AppointmentID.c_str());
+    // aSIndex.deleteId(AppointmentID.c_str());
     cout << "Appointment with ID " << AppointmentID << " deleted successfully." << endl;
 }
 
@@ -159,6 +162,7 @@ void HealthcareSystem::deleteDoctor(const string &doctorID)
 
     // Remove the doctor from the primary index
     dIndex.deleteID(doctorID.c_str());
+    // dSIndex.deleteId( doctorID.c_str());
 
     cout << "Doctor with ID " << doctorID << " deleted successfully." << endl;
 }
