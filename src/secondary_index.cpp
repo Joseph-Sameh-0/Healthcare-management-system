@@ -219,10 +219,8 @@ public:
       if (newRRN == -1) //  if the id is the last id
       {
         deleteKey(key);
-        cout << "Name " << key << " deleted" << endl;
       }
     }
-    cout << "Doctor " << key << " with  id " << id << " deleted" << endl;
     return true;
   }
 
