@@ -39,10 +39,10 @@ public:
         file.open("../data/Appointments.txt", ios::in | ios::out | ios::app);
         file.close();
     }
-    Query parseQuery(const string &query);
+    void parseQuery(const string& query);
     void executeQuery(Query query);
-    void getDoctorData(Query query, long long byteOffSet);
-    void getAppointmentData(Query query, long long byteOffSet);
+    void getDoctorData(ifstream& file, Query query, long long byteOffSet);
+    void getAppointmentData(ifstream& file, Query query, long long byteOffSet);
 };
 
 #endif
