@@ -8,8 +8,7 @@ int main()
 {
     HealthcareSystem sys;
     int choice;
-    string userQuery;
-    Query parsedQuery;
+    char userQuery[1000];
     do
     {
         cout << "Welcome to Hospital Management System" << endl;
@@ -31,13 +30,20 @@ int main()
         {
         case 1:
             // Add new doctor
-            sys.addDoctor("1", "Dr.e", "12");
+            sys.addDoctor("1111", "aaaaaa", "aaaaa");
+            sys.addDoctor("2", "b", "bb");
+            sys.addDoctor("cc", "cccc", "c");
             break;
         case 2:
             // Add new appointment
+            sys.addAppointment("1","2","2-2-2025");
+            sys.addAppointment("2","1111","1-3-2025");
+            sys.addAppointment("3","2","3-8-2024");
+
             break;
         case 3:
             // Update doctor name
+            sys.updateDoctor("1111", "dddddd", "ddddd");
             break;
         case 4:
             // Update appointment date
@@ -47,7 +53,9 @@ int main()
             break;
         case 6:
             // Delete Doctor
-            sys.deleteDoctor("1");
+            sys.deleteDoctor("cc");
+            sys.deleteDoctor("2");
+            sys.deleteDoctor("1111");
             break;
         case 7:
             // Print doctor info
@@ -56,8 +64,10 @@ int main()
             // Print appointment info
             break;
         case 9:
-            userQuery = "Select all from Doctors where DoctorID = '1'";
-            parsedQuery = sys.parseQuery(userQuery);
+            cout << "Enter your query: ";
+            cin.ignore();
+            cin.getline(userQuery, 1000);
+            sys.parseQuery(userQuery);
             break;
         case 10:
             cout << "Exiting the program..." << endl;
