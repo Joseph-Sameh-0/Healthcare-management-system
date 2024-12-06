@@ -103,8 +103,8 @@ void HealthcareSystem::deleteAppointment(const string &AppointmentID)
     getline(s, docId, '|');
     getline(s, docId, '\n');
     // cout << docId << endl;                             // Print the name of the doctor being deleted
-    dIndex.deleteID(AppointmentID.c_str());                 // Remove the doctor from the primary index
-    dSIndex.deleteId(docId.c_str(), AppointmentID.c_str()); // Delete the doctor from the doctor index
+    aIndex.deleteID(AppointmentID.c_str());                 // Remove the doctor from the primary index
+    aSIndex.deleteId(docId.c_str(), AppointmentID.c_str()); // Delete the doctor from the doctor index
 
     // Mark the record as deleted by writing the DELETE_FLAG ('*')
     AppointmentFile.seekp(byteOffset, ios::beg);
