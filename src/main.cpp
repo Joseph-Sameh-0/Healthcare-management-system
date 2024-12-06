@@ -28,17 +28,27 @@ int main()
         {
         case 1:
             // Add new doctor
-            sys.addDoctor("1", "jox", "alf maskn");
+            // sys.addDoctor("1", "jox", "alf maskn");
             // sys.addDoctor("2", "joseph", "alf maskn");
-            sys.addDoctor("3", "hegazy", "alf maskn");
-            sys.addDoctor("2", "he", "alf maskn");
+            // sys.addDoctor("3", "gg", "rr");
+            sys.printAppointment(5);
+            // sys.addDoctor("3", "hegazy", "alf maskn");
+            // sys.addDoctor("2", "h", "alf ");
+            // sys.printDoctor(31);
+            // sys.printDoctor(60);
+            
+            // for (PrimaryIndexRow r:sys.dIndex.getVector()){
+            //     cout << r.byteOffset<<endl;
+            // }
             // sys.addDoctor("3", "hegazy", "alf maskn");
             // sys.printDoctor(sizeof(int) + sizeof(char));
             // sys.printDoctor(sizeof(int) + sizeof(char)+16);
 
             break;
         case 2:
-            // Add new appointment
+            // sys.addAppointment("111111" , "11-12-2024" , "111111");
+            // sys.addAppointment("33333333" , "1-12-2024" , "33333");
+            sys.addAppointment("2" , "1-2-2024" , "2");
             break;
         case 3:
             // Update doctor name
@@ -47,10 +57,12 @@ int main()
             // Update appointment date
             break;
         case 5:
-            // delet appointment
+            sys.deleteAppointment("111111");
+            sys.deleteAppointment("2");
             break;
         case 6:
             sys.deleteDoctor("2");
+            sys.deleteDoctor("3");
             break;
         case 7:
             // Print doctor info
