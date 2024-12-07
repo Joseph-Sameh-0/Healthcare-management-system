@@ -22,7 +22,7 @@ public:
     void deleteDoctor(const string &doctorID);
     void deleteAppointment(const string &AppointmentID);
     void updateDoctor(const string &id, const string &newName);
-    void updateAppointment(const string &appointmentID, const string &newDate, const string &newDoctorID);
+    void updateAppointment(const string &appointmentID, const string &newDate);
 
     // Other methods: deleteDoctor, deleteAppointment, etc.
     PrimaryIndex dIndex;

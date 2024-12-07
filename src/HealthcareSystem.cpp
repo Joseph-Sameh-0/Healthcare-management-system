@@ -430,7 +430,7 @@ void HealthcareSystem::updateDoctor(const string &id, const string &newName)
     dSIndex.editKey(oldName.c_str(), newName.c_str(), id.c_str());
 }
 
-void HealthcareSystem::updateAppointment(const string &id, const string &newDoctorID, const string &newDate)
+void HealthcareSystem::updateAppointment(const string &id, const string &newDate)
 {
     fstream appointmentsFile("../data/Appointments.txt", ios::in | ios::out | ios::binary);
 
@@ -454,13 +454,13 @@ void HealthcareSystem::updateAppointment(const string &id, const string &newDoct
 
     // Extract the old details
     stringstream s(oldRecord);
-    string oldDoctorID;
-    getline(s, oldDoctorID, '|'); // Skip appointment ID
-    getline(s, oldDoctorID, '|');
+    string oldAppointmentID, oldDoctorID, oldDate;
+    getline(s, oldAppointmentID, '|'); // Skip appointment ID
+    getline(s, oldDate, '|');
     getline(s, oldDoctorID, '\n');
 
     // Create the new record
-    string record = id + "|" + newDate + "|" + newDoctorID + "\n";
+    string record = id + "|" + newDate + "|" + oldDoctorID + "\n";
     short newRecordSize = record.length();
 
     if (newRecordSize <= recordSize)
@@ -480,7 +480,7 @@ void HealthcareSystem::updateAppointment(const string &id, const string &newDoct
     {
         // Delete old record and add a new one at the end
         deleteAppointment(id);
-        addAppointment(id, newDoctorID, newDate);
+        addAppointment(id, oldDoctorID, newDate);
         cout << "Appointment information updated successfully." << endl;
         return;
     }
@@ -488,7 +488,7 @@ void HealthcareSystem::updateAppointment(const string &id, const string &newDoct
     // Update indexes
     aIndex.deleteID((char *)id.c_str());
     aIndex.add((char *)id.c_str(), byteOffset);
-    aSIndex.editKey(oldDoctorID.c_str(), newDoctorID.c_str(), id.c_str());
+    // aSIndex.editKey(oldDoctorID.c_str(), newDoctorID.c_str(), id.c_str());
 }
 
 // query handling
