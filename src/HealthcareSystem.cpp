@@ -705,9 +705,9 @@ void HealthcareSystem::printInfoAsQuery(const string& id, const string& type) {
     string query;
 
     if (type == "doctor") {
-        query = "Select all from Doctors where Doctor ID='" + id + "';";
+        query = "Select all from Doctors where DoctorID='" + id + "';";
     } else if (type == "appointment") {
-        query = "Select all from Appointments where Appointment ID='" + id + "';";
+        query = "Select all from Appointments where AppointmentID='" + id + "';";
     } else {
         cerr << "Error: Unknown type '" << type << "'!" << endl;
         return;
