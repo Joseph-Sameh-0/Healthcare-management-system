@@ -103,13 +103,11 @@ int main()
             // Add new doctor
             doc = getDoctorInfoFromUser();
             sys.addDoctor(doc.id, doc.name, doc.address);
-            cout << "Doctor " << doc.name << "was added successfully." << endl;       
             break;
         case 2:
             // Add new appointment
             appt = getAppointmentInfoFromUser();
             sys.addAppointment(appt.id, appt.doctorId, appt.date);
-            cout << "Appointment " << appt.id << " was added successfully." << endl;
             break;
         case 3:
             // Update doctor name
@@ -119,7 +117,6 @@ int main()
             cout << "Enter New Doctor Name: ";
             getline(cin, doc.name);
             sys.updateDoctor(doc.id, doc.name);
-            cout << "Doctor " << doc.id << " was updated successfully." << endl;
             break;
         case 4:
             // Update appointment date
@@ -129,7 +126,6 @@ int main()
             cout << "Enter New Appointment Date: ";
             getline(cin, appt.date);
             sys.updateAppointment(appt.id, appt.date);
-            cout << "Appointment " << appt.id << " was updated successfully." << endl;
             break;
         case 5:
             // Delete appointment

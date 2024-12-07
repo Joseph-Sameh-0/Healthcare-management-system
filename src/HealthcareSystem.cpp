@@ -127,6 +127,8 @@ void HealthcareSystem::addAppointment(const string &appointmentID, const string 
     appointmentFile.write(record.c_str(), recordSize);       // Write record data
 
     appointmentFile.close();
+
+    cout << "Appointment " << appointmentID << " was added successfully." << endl;
 }
 
 void HealthcareSystem::addDoctor(const string &doctorID, const string &name, const string &address)
@@ -229,6 +231,7 @@ void HealthcareSystem::addDoctor(const string &doctorID, const string &name, con
             doctorFile.close();
             return;
         }
+        cout << "Doctor " << name << "was added successfully." << endl;
     }
 
     // If no deleted records were suitable, append the record to the end of the file
@@ -324,7 +327,7 @@ void HealthcareSystem::deleteDoctor(const string &doctorID)
         cout << "Error: Doctor with ID " << doctorID << " has appointments and cannot be deleted." << endl;
         return;
     }
-    
+
     // Open the file in binary read/write mode
     fstream doctorFile("../data/Doctors.txt", ios::in | ios::out | ios::binary);
     if (!doctorFile)
@@ -394,15 +397,14 @@ void HealthcareSystem::updateDoctor(const string &id, const string &newName)
     char oldRecord[recSize];
     doctorsFile.read(oldRecord, recSize);
     stringstream s(oldRecord);
-    
+
     string oldName;
     string oldAddress;
     getline(s, oldName, '|');
-    
+
     getline(s, oldName, '|');
-    
+
     getline(s, oldAddress, '\n');
-    
 
     // Create the new record
     string record = id + "|" + newName + "|" + oldAddress + "\n";
@@ -420,7 +422,6 @@ void HealthcareSystem::updateDoctor(const string &id, const string &newName)
         doctorsFile.write((char *)&recordSize, sizeof(int));
         doctorsFile.write(record.c_str(), recordSize);
         doctorsFile.close();
-
     }
     else
     {
@@ -435,6 +436,8 @@ void HealthcareSystem::updateDoctor(const string &id, const string &newName)
     dIndex.deleteID((char *)id.c_str());
     dIndex.add((char *)id.c_str(), byteOffset);
     dSIndex.editKey(oldName.c_str(), newName.c_str(), id.c_str());
+
+    cout << "Doctor " << id << " was updated successfully." << endl;
 }
 
 void HealthcareSystem::updateAppointment(const string &id, const string &newDate)
@@ -496,6 +499,7 @@ void HealthcareSystem::updateAppointment(const string &id, const string &newDate
     aIndex.deleteID((char *)id.c_str());
     aIndex.add((char *)id.c_str(), byteOffset);
     // aSIndex.editKey(oldDoctorID.c_str(), newDoctorID.c_str(), id.c_str());
+    cout << "Appointment " << id << " was updated successfully." << endl;
 }
 
 // query handling
@@ -562,10 +566,10 @@ void HealthcareSystem::executeQuery(Query query)
             {
                 long long byteOffSet = dIndex.getByteOffset(doctorIDs[i].c_str());
                 getDoctorData(file, query, byteOffSet);
-
             }
         }
-        else{
+        else
+        {
             vector<long long> byteOffSets = dIndex.getAllOffset();
             if (byteOffSets.empty())
             {
@@ -575,7 +579,6 @@ void HealthcareSystem::executeQuery(Query query)
             for (int i = 0; i < byteOffSets.size(); i++)
             {
                 getDoctorData(file, query, byteOffSets[i]);
-
             }
         }
         file.close();
@@ -608,7 +611,8 @@ void HealthcareSystem::executeQuery(Query query)
                 getAppointmentData(file, query, byteOffSet);
             }
         }
-        else{
+        else
+        {
             vector<long long> byteOffSets = aIndex.getAllOffset();
             if (byteOffSets.empty())
             {
@@ -618,14 +622,13 @@ void HealthcareSystem::executeQuery(Query query)
             for (int i = 0; i < byteOffSets.size(); i++)
             {
                 getAppointmentData(file, query, byteOffSets[i]);
-
             }
         }
         file.close();
     }
 }
 
-void HealthcareSystem::getDoctorData(ifstream& file, Query query, long long byteOffSet)
+void HealthcareSystem::getDoctorData(ifstream &file, Query query, long long byteOffSet)
 {
     file.seekg(byteOffSet + sizeof(char), ios::beg);
     int recordSize;
@@ -667,7 +670,7 @@ void HealthcareSystem::getDoctorData(ifstream& file, Query query, long long byte
     }
 }
 
-void HealthcareSystem::getAppointmentData(ifstream& file, Query query, long long byteOffSet)
+void HealthcareSystem::getAppointmentData(ifstream &file, Query query, long long byteOffSet)
 {
     file.seekg(byteOffSet + sizeof(char), ios::beg);
     int recordSize;
@@ -708,18 +711,23 @@ void HealthcareSystem::getAppointmentData(ifstream& file, Query query, long long
         cout << field << endl;
     }
 }
-void HealthcareSystem::printInfoAsQuery(const string& id, const string& type) {
+void HealthcareSystem::printInfoAsQuery(const string &id, const string &type)
+{
     string query;
 
-    if (type == "doctor") {
+    if (type == "doctor")
+    {
         query = "Select all from Doctors where DoctorID='" + id + "';";
-    } else if (type == "appointment") {
+    }
+    else if (type == "appointment")
+    {
         query = "Select all from Appointments where AppointmentID='" + id + "';";
-    } else {
+    }
+    else
+    {
         cerr << "Error: Unknown type '" << type << "'!" << endl;
         return;
     }
 
     return parseQuery(query);
 }
-
