@@ -121,12 +121,26 @@ int main()
             break;
         case 4:
             // Update appointment date
+            cout << "Enter Appointment ID: ";
+            cin.ignore();
+            getline(cin, appt.id);
+            cout << "Enter New Appointment Date: ";
+            getline(cin, appt.date);
+            sys.updateAppointment(appt.id, appt.date);
             break;
         case 5:
             // Delete appointment
+            cout << "Enter Appointment ID: ";
+            cin.ignore();
+            getline(cin, appt.id);
+            sys.deleteAppointment(appt.id);
             break;
         case 6:
             // Delete Doctor
+            cout << "Enter Doctor ID: ";
+            cin.ignore();
+            getline(cin, doc.id);
+            sys.deleteDoctor(doc.id);
             break;
         case 7:
             // Print doctor info
