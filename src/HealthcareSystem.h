@@ -21,7 +21,7 @@ public:
     void addAppointment(const string &appointmentID, const string &doctorID, const string &date);
     void deleteDoctor(const string &doctorID);
     void deleteAppointment(const string &AppointmentID);
-    void updateDoctor(const string &id, const string &newName, const string &newAddress);
+    void updateDoctor(const string &id, const string &newName);
     void updateAppointment(const string &appointmentID, const string &newDate, const string &newDoctorID);
 
     // Other methods: deleteDoctor, deleteAppointment, etc.
@@ -45,6 +45,7 @@ public:
     void executeQuery(Query query);
     void getDoctorData(ifstream& file, Query query, long long byteOffSet);
     void getAppointmentData(ifstream& file, Query query, long long byteOffSet);
+    void printInfoAsQuery(const string& id, const string& type);
 };
 
 #endif

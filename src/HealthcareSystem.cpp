@@ -361,7 +361,7 @@ void HealthcareSystem::deleteDoctor(const string &doctorID)
     cout << "Doctor with ID " << doctorID << " deleted successfully." << endl;
 }
 
-void HealthcareSystem::updateDoctor(const string &id, const string &newName, const string &newAddress)
+void HealthcareSystem::updateDoctor(const string &id, const string &newName)
 {
     fstream doctorsFile("../data/Doctors.txt", ios::in | ios::out | ios::binary);
 
@@ -381,12 +381,18 @@ void HealthcareSystem::updateDoctor(const string &id, const string &newName, con
     char oldRecord[recSize];
     doctorsFile.read(oldRecord, recSize);
     stringstream s(oldRecord);
+    
     string oldName;
+    string oldAddress;
     getline(s, oldName, '|');
+    
     getline(s, oldName, '|');
+    
+    getline(s, oldAddress, '\n');
+    
 
     // Create the new record
-    string record = id + "|" + newName + "|" + newAddress + "\n";
+    string record = id + "|" + newName + "|" + oldAddress + "\n";
     short newRecordSize = record.length();
 
     if (newRecordSize <= recordSize)
@@ -407,7 +413,7 @@ void HealthcareSystem::updateDoctor(const string &id, const string &newName, con
     {
         // Delete old record and add new one at the end
         deleteDoctor(id);
-        addDoctor(id, newName, newAddress);
+        addDoctor(id, newName, oldAddress);
         cout << "Doctor information updated successfully." << endl;
         return;
     }
@@ -689,3 +695,18 @@ void HealthcareSystem::getAppointmentData(ifstream& file, Query query, long long
         cout << field << endl;
     }
 }
+void HealthcareSystem::printInfoAsQuery(const string& id, const string& type) {
+    string query;
+
+    if (type == "doctor") {
+        query = "Select all from Doctors where Doctor ID='" + id + "';";
+    } else if (type == "appointment") {
+        query = "Select all from Appointments where Appointment ID='" + id + "';";
+    } else {
+        cerr << "Error: Unknown type '" << type << "'!" << endl;
+        return;
+    }
+
+    return parseQuery(query);
+}
+
