@@ -318,6 +318,13 @@ void HealthcareSystem::deleteDoctor(const string &doctorID)
         cout << "Error: Doctor with ID " << doctorID << " does not exist." << endl;
         return;
     }
+    // If doctor has an appointment, prevent deletion
+    if (aSIndex.getIds(doctorID.c_str()).size() > 0)
+    {
+        cout << "Error: Doctor with ID " << doctorID << " has appointments and cannot be deleted." << endl;
+        return;
+    }
+    
     // Open the file in binary read/write mode
     fstream doctorFile("../data/Doctors.txt", ios::in | ios::out | ios::binary);
     if (!doctorFile)
