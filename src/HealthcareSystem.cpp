@@ -622,7 +622,7 @@ void HealthcareSystem::executeQuery(Query query)
             }
             for (int i = 0; i < byteOffSets.size(); i++)
             {
-                getDoctorData(file, query, byteOffSets[i]);
+                getAppointmentData(file, query, byteOffSets[i]);
             }
         }
         else{
