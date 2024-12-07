@@ -3,12 +3,83 @@
 #include "HealthcareSystem.cpp"
 
 using namespace std;
+struct Doctor {
+    string id;
+    string name;
+    string address;
+};
+Doctor getDoctorInfoFromUser() {
+    Doctor doc;
+
+    cout << "Enter Doctor ID (max 14 characters): ";
+    cin >> doc.id;
+    if (doc.id.length() >= 15) {
+        cerr << "Error: Doctor ID must be 14 characters or less!" << endl;
+        return doc;
+    }
+
+    cin.ignore(); // Clear buffer.
+    cout << "Enter Doctor Name (max 29 characters): ";
+    getline(cin, doc.name);
+    if (doc.name.length() >= 30) {
+        cerr << "Error: Doctor Name must be 29 characters or less!" << endl;
+        return doc;
+    }
+
+    cout << "Enter Doctor Address (max 29 characters): ";
+    getline(cin, doc.address);
+    if (doc.address.length() >= 30) {
+        cerr << "Error: Address must be 29 characters or less!" << endl;
+        return doc;
+    }
+
+    return doc;
+}
+struct Appointment {
+    string id;         // Appointment ID 
+    string date;       // Appointment Date
+    string doctorId;   // Doctor ID (secondary key)
+};
+
+Appointment getAppointmentInfoFromUser() {
+    Appointment appt;
+
+    // Validate Appointment ID
+    cout << "Enter Appointment ID (max 14 characters): ";
+    cin >> appt.id;
+    if (appt.id.length() >= 15) {
+        cerr << "Error: Appointment ID must be 14 characters or less!" << endl;
+        return appt;
+    }
+
+    cin.ignore(); // Clear input buffer
+
+    // Validate Appointment Date
+    cout << "Enter Appointment Date (max 29 characters): ";
+    getline(cin, appt.date);
+    if (appt.date.length() >= 30) {
+        cerr << "Error: Appointment Date must be 29 characters or less!" << endl;
+        return appt;
+    }
+
+    // Validate Doctor ID
+    cout << "Enter Doctor ID (max 14 characters): ";
+    cin >> appt.doctorId;
+    if (appt.doctorId.length() >= 15) {
+        cerr << "Error: Doctor ID must be 14 characters or less!" << endl;
+        return appt;
+    }
+
+    return appt;
+}
 
 int main()
 {
     HealthcareSystem sys;
     int choice;
     char userQuery[1000];
+    Doctor doc;
+    Appointment appt;
     do
     {
         cout << "Welcome to Hospital Management System" << endl;
@@ -30,12 +101,23 @@ int main()
         {
         case 1:
             // Add new doctor
+            doc = getDoctorInfoFromUser();
+            sys.addDoctor(doc.id, doc.name, doc.address);
+            
             break;
         case 2:
             // Add new appointment
+            appt = getAppointmentInfoFromUser();
+            sys.addAppointment(appt.id, appt.doctorId, appt.date);
             break;
         case 3:
             // Update doctor name
+            cout << "Enter Doctor ID: ";
+            cin.ignore();
+            getline(cin, doc.id);
+            cout << "Enter New Doctor Name: ";
+            getline(cin, doc.name);
+            sys.updateDoctor(doc.id, doc.name);
             break;
         case 4:
             // Update appointment date
@@ -48,9 +130,17 @@ int main()
             break;
         case 7:
             // Print doctor info
+            cout << "Enter Doctor ID: ";
+            cin.ignore();
+            getline(cin, doc.id);
+            sys.printInfoAsQuery(doc.id, "doctor");
             break;
         case 8:
             // Print appointment info
+            cout << "Enter Appointment ID: ";
+            cin.ignore();
+            getline(cin, appt.id);
+            sys.printInfoAsQuery(appt.id, "appointment");
             break;
         case 9:
             cout << "Enter your query: ";
