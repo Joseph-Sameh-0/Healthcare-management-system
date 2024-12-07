@@ -14,6 +14,12 @@ void HealthcareSystem::addAppointment(const string &appointmentID, const string 
         cout << "Appointment ID already exists." << endl;
         return;
     }
+    // make sure that the doctor exists
+    if (dIndex.getByteOffset(doctorID.c_str()) == -1)
+    {
+        cout << "Error: Doctor with ID " << doctorID << " does not exist." << endl;
+        return;
+    }
 
     fstream appointmentFile;
     appointmentFile.open("../data/Appointments.txt", ios::in | ios::out); // Open file for reading and writing
