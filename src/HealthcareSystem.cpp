@@ -565,7 +565,7 @@ void HealthcareSystem::executeQuery(Query query)
 
             }
         }
-        else{
+        else if (query.condition[0] == ""){
             vector<long long> byteOffSets = dIndex.getAllOffset();
             if (byteOffSets.empty())
             {
@@ -577,6 +577,9 @@ void HealthcareSystem::executeQuery(Query query)
                 getDoctorData(file, query, byteOffSets[i]);
 
             }
+        }
+        else{
+            cout << "Invalid condition";
         }
         file.close();
     }
@@ -608,8 +611,8 @@ void HealthcareSystem::executeQuery(Query query)
                 getAppointmentData(file, query, byteOffSet);
             }
         }
-        else{
-            vector<long long> byteOffSets = aIndex.getAllOffset();
+        else if (query.condition[0] == ""){
+            vector<long long> byteOffSets = dIndex.getAllOffset();
             if (byteOffSets.empty())
             {
                 cout << "No Appointments" << endl;
@@ -617,9 +620,11 @@ void HealthcareSystem::executeQuery(Query query)
             }
             for (int i = 0; i < byteOffSets.size(); i++)
             {
-                getAppointmentData(file, query, byteOffSets[i]);
-
+                getDoctorData(file, query, byteOffSets[i]);
             }
+        }
+        else{
+            cout << "Invalid condition";
         }
         file.close();
     }
