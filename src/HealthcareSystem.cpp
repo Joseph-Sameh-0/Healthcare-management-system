@@ -715,6 +715,7 @@ void HealthcareSystem::getAppointmentData(ifstream &file, Query query, long long
         cout << field << endl;
     }
 }
+
 void HealthcareSystem::printInfoAsQuery(const string &id, const string &type)
 {
     string query;
