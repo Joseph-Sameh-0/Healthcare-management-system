@@ -140,7 +140,6 @@ int main()
         case 3:
             // Update doctor name
             cout << "Enter Doctor ID: ";
-            cin.ignore();
             getline(cin, doc.id);
             cout << "Enter New Doctor Name: ";
             getline(cin, doc.name);
@@ -149,7 +148,6 @@ int main()
         case 4:
             // Update appointment date
             cout << "Enter Appointment ID: ";
-            cin.ignore();
             getline(cin, appt.id);
             cout << "Enter New Appointment Date: ";
             getline(cin, appt.date);
@@ -158,34 +156,29 @@ int main()
         case 5:
             // Delete appointment
             cout << "Enter Appointment ID: ";
-            cin.ignore();
             getline(cin, appt.id);
             sys.deleteAppointment(appt.id);
             break;
         case 6:
             // Delete Doctor
             cout << "Enter Doctor ID: ";
-            cin.ignore();
             getline(cin, doc.id);
             sys.deleteDoctor(doc.id);
             break;
         case 7:
             // Print doctor info
             cout << "Enter Doctor ID: ";
-            cin.ignore();
             getline(cin, doc.id);
             sys.printInfoAsQuery(doc.id, "doctor");
             break;
         case 8:
             // Print appointment info
             cout << "Enter Appointment ID: ";
-            cin.ignore();
             getline(cin, appt.id);
             sys.printInfoAsQuery(appt.id, "appointment");
             break;
         case 9:
             cout << "Enter your query: ";
-            cin.ignore();
             cin.getline(userQuery, 1000);
             sys.parseQuery(userQuery);
             break;
