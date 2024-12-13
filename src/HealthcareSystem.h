@@ -4,6 +4,7 @@
 #include <string>
 #include "primary_index.cpp"
 #include "secondary_index.cpp"
+#include <filesystem>
 using namespace std;
 
 struct Query
@@ -31,6 +32,12 @@ public:
     SecondaryIndex<char[15]> aSIndex;
     HealthcareSystem()
     {
+        namespace fs = std::filesystem;
+        if (!fs::exists("../data"))
+        {
+            fs::create_directory("../data");
+        }
+
         dIndex = PrimaryIndex("../data/PrimaryIndexDoctors.txt");
         aIndex = PrimaryIndex("../data/PrimaryIndexAppointments.txt");
         dSIndex = SecondaryIndex<char[30]>("../data/SecondaryIndexDoctors.txt", "../data/LinkedListDoctors.txt");
@@ -41,11 +48,11 @@ public:
         file.open("../data/Appointments.txt", ios::in | ios::out | ios::app);
         file.close();
     }
-    void parseQuery(const string& query);
+    void parseQuery(const string &query);
     void executeQuery(Query query);
-    void getDoctorData(ifstream& file, Query query, long long byteOffSet);
-    void getAppointmentData(ifstream& file, Query query, long long byteOffSet);
-    void printInfoAsQuery(const string& id, const string& type);
+    void getDoctorData(ifstream &file, Query query, long long byteOffSet);
+    void getAppointmentData(ifstream &file, Query query, long long byteOffSet);
+    void printInfoAsQuery(const string &id, const string &type);
 };
 
 #endif
