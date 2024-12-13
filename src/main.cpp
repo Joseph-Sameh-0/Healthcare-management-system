@@ -86,13 +86,14 @@ Appointment getAppointmentInfoFromUser()
 int main()
 {
     HealthcareSystem sys;
-    int choice;
+    string choiceStr;
+    int choice = 0;
     char userQuery[1000];
     Doctor doc;
     Appointment appt;
     do
     {
-        cout << "Welcome to Hospital Management System" << endl;
+        cout << "\nWelcome to Hospital Management System" << endl;
         cout << "1. Add New Doctor" << endl;
         cout << "2. Add New Appointment" << endl;
         cout << "3. Update Doctor Name (Doctor ID)" << endl;
@@ -104,8 +105,25 @@ int main()
         cout << "9. Write Query" << endl;
         cout << "10. Exit" << endl;
 
-        cout << "Enter the number of your choice your choice: ";
-        cin >> choice;
+        cout << "Enter the number of your choice: ";
+        getline(cin, choiceStr);
+
+        try
+        {
+            choiceStr.erase(0, choiceStr.find_first_not_of(" \t"));
+            choiceStr.erase(choiceStr.find_last_not_of(" \t") + 1);
+            choice = stoi(choiceStr);
+        }
+        catch (invalid_argument &)
+        {
+            cout << "Invalid input. Please enter a number between 1 and 10." << endl;
+            continue;
+        }
+        catch (out_of_range &)
+        {
+            cout << "Input number is out of range. Please enter a valid choice." << endl;
+            continue;
+        }
 
         switch (choice)
         {
