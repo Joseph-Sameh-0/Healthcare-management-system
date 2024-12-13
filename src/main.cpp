@@ -3,17 +3,20 @@
 #include "HealthcareSystem.cpp"
 
 using namespace std;
-struct Doctor {
+struct Doctor
+{
     string id;
     string name;
     string address;
 };
-Doctor getDoctorInfoFromUser() {
+Doctor getDoctorInfoFromUser()
+{
     Doctor doc;
 
     cout << "Enter Doctor ID (max 14 characters): ";
     cin >> doc.id;
-    if (doc.id.length() >= 15) {
+    if (doc.id.length() >= 15)
+    {
         cerr << "Error: Doctor ID must be 14 characters or less!" << endl;
         return doc;
     }
@@ -21,33 +24,38 @@ Doctor getDoctorInfoFromUser() {
     cin.ignore(); // Clear buffer.
     cout << "Enter Doctor Name (max 29 characters): ";
     getline(cin, doc.name);
-    if (doc.name.length() >= 30) {
+    if (doc.name.length() >= 30)
+    {
         cerr << "Error: Doctor Name must be 29 characters or less!" << endl;
         return doc;
     }
 
     cout << "Enter Doctor Address (max 29 characters): ";
     getline(cin, doc.address);
-    if (doc.address.length() >= 30) {
+    if (doc.address.length() >= 30)
+    {
         cerr << "Error: Address must be 29 characters or less!" << endl;
         return doc;
     }
 
     return doc;
 }
-struct Appointment {
-    string id;         // Appointment ID 
-    string date;       // Appointment Date
-    string doctorId;   // Doctor ID (secondary key)
+struct Appointment
+{
+    string id;       // Appointment ID
+    string date;     // Appointment Date
+    string doctorId; // Doctor ID (secondary key)
 };
 
-Appointment getAppointmentInfoFromUser() {
+Appointment getAppointmentInfoFromUser()
+{
     Appointment appt;
 
     // Validate Appointment ID
     cout << "Enter Appointment ID (max 14 characters): ";
     cin >> appt.id;
-    if (appt.id.length() >= 15) {
+    if (appt.id.length() >= 15)
+    {
         cerr << "Error: Appointment ID must be 14 characters or less!" << endl;
         return appt;
     }
@@ -57,7 +65,8 @@ Appointment getAppointmentInfoFromUser() {
     // Validate Appointment Date
     cout << "Enter Appointment Date (max 29 characters): ";
     getline(cin, appt.date);
-    if (appt.date.length() >= 30) {
+    if (appt.date.length() >= 30)
+    {
         cerr << "Error: Appointment Date must be 29 characters or less!" << endl;
         return appt;
     }
@@ -65,7 +74,8 @@ Appointment getAppointmentInfoFromUser() {
     // Validate Doctor ID
     cout << "Enter Doctor ID (max 14 characters): ";
     cin >> appt.doctorId;
-    if (appt.doctorId.length() >= 15) {
+    if (appt.doctorId.length() >= 15)
+    {
         cerr << "Error: Doctor ID must be 14 characters or less!" << endl;
         return appt;
     }
