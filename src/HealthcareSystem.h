@@ -25,7 +25,6 @@ public:
     void updateDoctor(const string &id, const string &newName);
     void updateAppointment(const string &appointmentID, const string &newDate);
 
-    // Other methods: deleteDoctor, deleteAppointment, etc.
     PrimaryIndex dIndex;
     PrimaryIndex aIndex;
     SecondaryIndex<char[30]> dSIndex;
